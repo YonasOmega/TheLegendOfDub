@@ -13,7 +13,7 @@ class Dungeon():
         self.__grid = [[0 for _ in range(self.__gridWidth)] for _ in range(self.__gridHeight)]
         self.__entrance =  self.__grid[random.randint(0, self.__gridWidth)][random.randint(0, self.__gridHeight)]
         self.__Exit = self.__grid[random.randint(0, self.__gridWidth)][random.randint(0, self.__gridHeight)]
-        self.different_entrance_and_exit()
+        self.different_entrance_and_exit(self)
 
     def different_entrance_and_exit(self):
         if self.__entrance == self.__Exit:
