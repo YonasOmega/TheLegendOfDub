@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 
 
 class Character(ABC):
-    __myType = 0
+    __myType = ""
 
-    def __init__(self, type):
+    def __init__(self, type: str):
         self.__myType = type
 
     @abstractmethod
