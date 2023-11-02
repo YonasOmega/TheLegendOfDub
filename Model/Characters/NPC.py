@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from Character import Character
 
 
 class NPC(ABC):
@@ -10,7 +9,7 @@ class NPC(ABC):
     __myAttackPower = 0
 
     def __init__(self, NPC, movementSpeed, lives, isAlive, attackPower):
-        self.__myNPC = Character(NPC)
+        self.__myNPC = NPC
         self.__myMovementSpeed = movementSpeed
         self.__myLives = lives
         self.__myIsAlive = isAlive
