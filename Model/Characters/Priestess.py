@@ -1,9 +1,9 @@
-from Model.Characters.Character import PlayableCharacter
+from Model.Characters.Character import Character
 
 
-class Priestess(PlayableCharacter):
+class Priestess(Character):
     __type = "Priestess"
-    __health = 5
+    __health = 10
     __strength = 2
     __speed = 2
     __items = list()

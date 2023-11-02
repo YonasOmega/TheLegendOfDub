@@ -1,10 +1,10 @@
 
-from Model.Characters.Character import PlayableCharacter
+from Model.Characters.Character import Character
 
 
-class Warrior(PlayableCharacter):
+class Warrior(Character):
     __type = "warrior"
-    __health = 3
+    __health = 6
     __strength = 3
     __speed = 3
     __items = list()

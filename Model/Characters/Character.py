@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class PlayableCharacter(ABC):
+class Character(ABC):
 
     __my_type = None
     __my_health = None
@@ -15,6 +15,8 @@ class PlayableCharacter(ABC):
         self.__my_strength = the_strength
         self.__my_speed = the_speed
         self.__my_Items = the_items
+
+
 
     @abstractmethod
     def health(self):
