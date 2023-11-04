@@ -2,9 +2,9 @@ from Model.Characters.Warrior import Warrior
 from Model.Characters.Priestess import Priestess
 from Model.Characters.Mage import Mage
 from Model.Characters.Thief import Thief
-from Model.Characters.Ogre import Ogre
-from Model.Characters.Goblin import Goblin
-from Model.Characters.Skeleton import Skeleton
+from Model.NonPlayable.Ogre import Ogre
+from Model.NonPlayable.Goblin import Goblin
+from Model.NonPlayable.Skeleton import Skeleton
 
 
 my_warrior = Warrior()
