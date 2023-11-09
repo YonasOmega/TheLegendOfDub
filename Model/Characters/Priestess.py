@@ -1,26 +1,21 @@
-from Model.Characters.Character import Character
+import random
+
+from Model.Characters.Heroes import Hero
 
 
-class Priestess(Character):
-    __type = "Priestess"
-    __health = 10
-    __strength = 2
-    __speed = 2
-    __items = list()
+class Priestess(Hero):
+    def __init__(self, name):
+        super().__init__(name, health=75, min_damage=25, max_damage=45, attack_speed=5, chance_to_hit=0.7, chance_to_block=0.3)
 
-    def __init__(self):
-        super().__init__(self.__type, self.__health, self.__strength, self.__speed, self.__items)
+    def special_skill(self, target):
+        # Implement the heal special skill
+        heal_amount = random.randint(15, 30)  # Adjust the healing range as needed
+        target.receive_healing(heal_amount)
+        return f"{self._name} used heal on {target.name}, healing {heal_amount} hit points."
 
-    def health(self):
-        print("health")
+    def receive_healing(self, amount):
+        self._health += amount
 
-    def strength(self):
-        print("attack")
-
-    def speed(self):
-        print("move")
-
-    def pull_items(self):
-        print("item")
-
+# Example usage:
+# priestess = Priestess("PriestessName")
 
