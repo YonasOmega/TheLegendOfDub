@@ -1,7 +1,9 @@
 import numpy as np
 import random
 
-class Dungeon:
+
+class DungeonGenerator:
+
     def __init__(self, row: int, col: int):
         self.__Row = row
         self.__Col = col
@@ -15,6 +17,8 @@ class Dungeon:
         self.__ExitX, self.__ExitY = self.random_position()
         while self.spaced_entrance_and_exit():
             self.__ExitX, self.__ExitY = self.random_position()
+        self.generate()
+        self.write_maze_to_file("Dungeon.txt")
 
     def random_position(self):
         return random.randint(0, self.__Row - 1), random.randint(0, self.__Col - 1)
@@ -43,14 +47,8 @@ class Dungeon:
 
 
     def __str__(self):
-        # First line with row and column count
-        first_line = f"{self.__Row} {self.__Col}"
-
-        # Create each row of the maze
-        rows = [" ".join(str(cell) for cell in self.__Maze[i]) for i in range(self.__Row)]
-
-        # Combine first line and rows
-        return first_line + "\n" + "\n".join(rows)
+        # Convert each row of the maze to a string and then join all rows
+        return '\n'.join([' '.join(map(str, row)) for row in self.__Maze])
 
     # Helper Methods
     def spaced_entrance_and_exit(self):
@@ -144,10 +142,13 @@ class Dungeon:
         with open(file_name, 'w') as file:
             file.write(self.__str__())
 
+    def get_maze(self):
+        return self.__Maze
+
 # Example usage
-dungeon = Dungeon(7, 7)
-dungeon.generate()
-print(dungeon)
-print(dungeon.get_Pill_Pos())
-print(dungeon.get_Path_Pos())
-dungeon.write_maze_to_file("Dungeon.txt")
+# dungeon = DungeonGenerator(7, 7)
+# dungeon.generate()
+# print(dungeon)
+# print(dungeon.get_Pill_Pos())
+# print(dungeon.get_Path_Pos())
+# dungeon.write_maze_to_file("Dungeon.txt")
