@@ -3,7 +3,8 @@ import pygame
 pygame.init()
 
 # Set up the full screen display
-screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)   #screen = pygame.display.set_mode((800, 600)) SMALLER SCREEN
+#screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((800, 600)) #small screen
 
 # Player settings (CAN BE UPDATED BASED ON WHAT YOU'D LIKE)
 player_pos = [400, 300]  # Starting position
