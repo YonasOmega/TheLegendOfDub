@@ -8,7 +8,7 @@ class Warrior(Hero):
         super().__init__(name, health=75, min_damage=20, max_damage=40, attack_speed=6, chance_to_hit=0.8,
                          chance_to_block=0.4)
 
-    def special_skill(self, opponent):
+    def special_skill(self, opponent: DungeonCharacter):
         # Implement surprise attack special skill
         surprise_attack_chance = random.randint(0, 100)
         if surprise_attack_chance <= 20:

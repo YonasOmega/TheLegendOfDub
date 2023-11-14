@@ -1,26 +1,19 @@
-from Model.Characters.Character import Character
+import random
+
+from Model.Characters.Heroes import Hero
+from Model.Characters.DungeonCharacter import DungeonCharacter
 
 
-class Mage(Character):
-    __type = "Mage"
-    __health = 4
-    __strength = 5
-    __speed = 2
-    __items = list()
+class Priestess(Hero):
+    def __init__(self, name):
+        super().__init__(name, health=75, min_damage=50, max_damage=100, attack_speed=2, chance_to_hit=0.7, chance_to_block=0.1)
 
-    def __init__(self):
-        super().__init__(self.__type, self.__health, self.__strength, self.__speed, self.__items)
+    def special_skill(self, target: DungeonCharacter):
+        # Implement the fireball special skill
+        fireball = self.calculate_damage() * 1.5
+        target.receive_damage(fireball)
+        return f"{self._name} used fireball on {target.name}, dealing {fireball} hit points."
 
-    def health(self):
-        print("health")
-
-    def strength(self):
-        print("attack")
-
-    def speed(self):
-        print("move")
-
-    def pull_items(self):
-        print("item")
-
+# Example usage:
+# priestess = Priestess("PriestessName")
 
