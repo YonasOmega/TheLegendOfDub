@@ -146,9 +146,6 @@ class DungeonGenerator:
         return self.__Maze
 
 # Example usage
-# dungeon = DungeonGenerator(7, 7)
-# dungeon.generate()
-# print(dungeon)
-# print(dungeon.get_Pill_Pos())
-# print(dungeon.get_Path_Pos())
-# dungeon.write_maze_to_file("Dungeon.txt")
+dungeon = DungeonGenerator(7, 7)
+maze = dungeon.get_maze()
+print(maze)

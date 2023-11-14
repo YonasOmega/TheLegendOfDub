@@ -12,9 +12,9 @@ class DungeonCharacter(ABC):
         self._attack_speed = attack_speed
         self._chance_to_hit = chance_to_hit
 
-    @abstractmethod
+
     def attack(self, opponent):
-        pass
+        opponent.receive_damage(self, random.randint(self._min_damage, self._max_damage))
 
     def can_attack(self):  #hit or miss
         return random.random() < self._chance_to_hit
