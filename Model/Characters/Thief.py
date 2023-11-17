@@ -1,26 +1,28 @@
-from Model.Characters.Character import Character
+from Model.Characters.Heroes import Hero
+import random
 
+class Thief(Hero):
+    def __init__(self, name):
+        super().__init__(name, health=75, min_damage=20, max_damage=40, attack_speed=6, chance_to_hit=0.8, chance_to_block=0.4)
 
-class Thief(Character):
-    __type = "Thief"
-    __health = 4
-    __strength = 2
-    __speed = 5
-    __items = list()
+    def special_skill(self, opponent):
+        # Implement the Surprise Attack special skill
+        skill_result = random.random()
 
-    def __init__(self):
-        super().__init__(self.__type, self.__health, self.__strength, self.__speed, self.__items)
+        if skill_result < 0.4:  # 40% chance of successful surprise attack
+            damage = random.randint(self._min_damage, self._max_damage)
+            opponent.receive_damage(damage)
+            return f"{self._name} successfully performed a surprise attack on {opponent.name} for {damage} damage and gets an extra turn."
+        elif skill_result < 0.6:  # 20% chance of getting caught
+            return f"{self._name} attempted a surprise attack but got caught. No attack this round."
+        else:  # 40% chance of a normal attack
+            damage = random.randint(self._min_damage, self._max_damage)
+            opponent.receive_damage(damage)
+            return f"{self._name} performed a normal attack on {opponent.name} for {damage} damage."
 
-    def health(self):
-        print("health")
-
-    def strength(self):
-        print("attack")
-
-    def speed(self):
-        print("move")
-
-    def pull_items(self):
-        print("item")
+    # Optionally, you can override the attack method if the Thief's attack behavior is different.
+    # def attack(self, opponent):
+    #     # Custom implementation for Thief's attack if needed
+    #     pass
 
 

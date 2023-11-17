@@ -1,6 +1,15 @@
-import numpy as np
 import random
 
+"""
+    0 = nothing
+    1 = room/pathway
+    X = Entrance
+    Y = Exit
+    A = Abtraction Pillar
+    E = Encapsulation Pillar
+    I = Inheritence
+    P = Polymorphim
+"""
 
 class DungeonGenerator:
 
@@ -145,10 +154,13 @@ class DungeonGenerator:
     def get_maze(self):
         return self.__Maze
 
+
+
 # Example usage
-# dungeon = DungeonGenerator(7, 7)
-# dungeon.generate()
-# print(dungeon)
+
 # print(dungeon.get_Pill_Pos())
 # print(dungeon.get_Path_Pos())
 # dungeon.write_maze_to_file("Dungeon.txt")
+# dungeon = DungeonGenerator(7, 7)
+# dungeon.generate()
+#  print(dungeon)
