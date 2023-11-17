@@ -43,6 +43,9 @@ class DungeonCharacter(ABC):
     def get_health(self):
         return self._health
 
+    def set_health(self, heal: int):
+        self._health += heal
+
     def get_attack_speed(self):
         return self._attack_speed
 

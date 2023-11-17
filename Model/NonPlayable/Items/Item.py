@@ -1,12 +1,16 @@
 from abc import ABC, abstractmethod
+from Model.Characters.Heroes import Hero
 
 
 class Item(ABC):
     __itemType = None
 
-    def __init__(self, item):
+    def __init__(self, item: str):
         self.__itemType = item
 
-    @abstractmethod
     def __str__(self):
+        return self.__itemType
+
+    @abstractmethod
+    def effect(self, hero: Hero):
         pass
