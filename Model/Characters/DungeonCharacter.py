@@ -13,9 +13,9 @@ class DungeonCharacter(ABC):
         self._chance_to_hit = chance_to_hit
         self._turns = None
 
-    @abstractmethod
-    def attack(self, opponent):
-        pass
+    # @abstractmethod
+    # def attack(self, opponent):
+    #     pass
 
     def can_attack(self):  #hit or miss
         return random.random() < self._chance_to_hit
