@@ -1,42 +1,39 @@
 import pygame
 
-pygame.init()
 
-# Set up the full screen display
-#screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-screen = pygame.display.set_mode((800, 600)) #small screen
+class PlayerController:
+    # Initialize the player controller
+    def __init__(self, start_pos, size, speed):
+        self.position = start_pos
+        self.size = size
+        self.speed = speed
 
-# Player settings (CAN BE UPDATED BASED ON WHAT YOU'D LIKE)
-player_pos = [400, 300]  # Starting position
-player_size = (50, 50)   # Size of the player
-player_speed = 1         # Speed of movement
+    # Moves the player in given direction
+    def move(self, direction):
+        if direction == "UP":
+            self.position[1] -= self.speed
+        elif direction == "DOWN":
+            self.position[1] += self.speed
+        elif direction == "LEFT":
+            self.position[0] -= self.speed
+        elif direction == "RIGHT":
+            self.position[0] += self.speed
 
-# Main game loop
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    # Gets the current position of the player
+    def get_position(self):
+        return self.position
 
-    # Key state detection (CAN USE ARROW KEYS AND WASD KEYS)
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP] or keys[pygame.K_w]:
-        player_pos[1] -= player_speed
-    elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-        player_pos[1] += player_speed
-    elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
-        player_pos[0] -= player_speed
-    elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-        player_pos[0] += player_speed
+    # Updates the player position based of the key state
+    def update(self, key_state):
+        if key_state[pygame.K_UP] or key_state[pygame.K_w]:
+            self.move("UP")
+        elif key_state[pygame.K_DOWN] or key_state[pygame.K_s]:
+            self.move("DOWN")
+        elif key_state[pygame.K_LEFT] or key_state[pygame.K_a]:
+            self.move("LEFT")
+        elif key_state[pygame.K_RIGHT] or key_state[pygame.K_d]:
+            self.move("RIGHT")
 
-    # Fill the screen with a color (e.g., black)
-    screen.fill((0, 0, 0))
-
-    # Draw the player
-    pygame.draw.rect(screen, (255, 255, 255), (*player_pos, *player_size))
-
-    # Update the display
-    pygame.display.flip()
-
-# Quit Pygame
-pygame.quit()
+    # Sets the new speed for the player (CAN BE USED FOR BUFFS/DEBUFFS)
+    def set_speed(self, new_speed):  # We can use to update speed for boost
+        self.speed = new_speed
