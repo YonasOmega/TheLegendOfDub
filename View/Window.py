@@ -9,8 +9,14 @@ screen_width = 470
 screen_height = 480
 
 # Image
-path_image = pygame.image.load("../Assets/brown_field/brown_field_detailed.png")
-path_special = pygame.image.load("../Assets/green_field/green_field_deatialed.png")
+path_image = pygame.image.load("../Assets/brown.png")
+block_background = pygame.image.load("../Assets/white.png")
+exit_image = pygame.image.load("../Assets/icons8-close-window-96.png")
+entrance_image = pygame.image.load("../Assets/icons8-tick-96.png")
+abstraction_image = pygame.image.load("../Assets/icons8-a-48.png")
+inheritance_image = pygame.image.load("../Assets/icons8-letter-i-47.png")
+encapsulation_image = pygame.image.load("../Assets/icons8-e-48.png")
+polymorphism_image = pygame.image.load("../Assets/icons8-p-key-48.png")
 
 # Create the window
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -31,14 +37,15 @@ print(dungeon_generator)
 
 # Map the characters to their corresponding images
 element_images = {
-    # 'X': entrance_image,
-    # 'Y': exit_image,
+     'X': entrance_image,
+     'Y': exit_image,
     #
-    # 'A': pillar_image,
-    # 'E': pillar_image,
-    # 'I': pillar_image,
-    # 'P': pillar_image,
+     'A': abstraction_image,
+     'E': encapsulation_image,
+     'I': inheritance_image,
+     'P': polymorphism_image,
     '1': path_image,
+    '0': block_background,
 }
 
 #Have a clock so we can so it to 60fps
@@ -57,7 +64,7 @@ while True:
             if element in element_images:
                 screen.blit(element_images[element], (col_index * 47, row_index * 48))
             elif element != '0':
-                screen.blit(path_special, (col_index * 47, row_index * 48))
+                screen.blit( (col_index * 47, row_index * 48))
 
     pygame.display.update()
     clock.tick(60)  # shouldn't run more than 60 ticks
