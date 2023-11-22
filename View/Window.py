@@ -2,6 +2,7 @@ import pygame
 
 from Controller.Controller import PlayerController
 from Model.DungeonGenerator import DungeonGenerator
+from Model.Characters.Heroes import Hero
 
 pygame.init()
 
@@ -31,6 +32,13 @@ pygame.display.set_caption("LegendOfDub")
 
 # Create a DungeonGenerator instance
 dungeon_generator = DungeonGenerator(10, 10)  # Set appropriate dimensions
+
+# Create a Hero instance and pass necessary parameters
+hero = Hero("HeroName", 100, 10, 20, 1.5, 0.8, 0.2)
+
+# Create an instance of player controller and pass the hero
+player_controller = PlayerController([400, 300], (50, 50), 2, hero)
+
 #dungeon_generator.generate()
 print(dungeon_generator)
 

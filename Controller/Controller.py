@@ -3,21 +3,27 @@ import pygame
 
 class PlayerController:
     # Initialize the player controller
-    def __init__(self, start_pos, size, speed):
+    def __init__(self, start_pos, size, speed, heroes_model):
         self.position = start_pos
         self.size = size
         self.speed = speed
+        self.heroes_model = heroes_model #refers to heroes model
 
     # Moves the player in given direction
     def move(self, direction):
+        new_position = self.position.copy()
         if direction == "UP":
-            self.position[1] -= self.speed
+            new_position[1] -= self.speed
         elif direction == "DOWN":
-            self.position[1] += self.speed
+            new_position[1] += self.speed
         elif direction == "LEFT":
-            self.position[0] -= self.speed
+            new_position[0] -= self.speed
         elif direction == "RIGHT":
-            self.position[0] += self.speed
+            new_position[0] += self.speed
+
+        # Check with heroes model if the movement is valid
+        if self.heroes_model.is_valid_movement(new_position):
+            self.position = new_position
 
     # Gets the current position of the player
     def get_position(self):
