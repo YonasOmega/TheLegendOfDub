@@ -1,12 +1,18 @@
 import pygame
 
+from Controller.Controller import PlayerController
 from Model.DungeonGenerator import DungeonGenerator
+from Model.Characters.Heroes import Hero
 
 pygame.init()
 
 # Set the window size
 screen_width = 470
 screen_height = 480
+
+# Create an instance of player controller
+player_controller = PlayerController([400, 300], (50, 50), 2)
+
 
 # Image
 path_image = pygame.image.load("../Assets/brown.png")
@@ -32,6 +38,13 @@ pygame.display.set_caption("LegendOfDub")
 
 # Create a DungeonGenerator instance
 dungeon_generator = DungeonGenerator(10, 10)  # Set appropriate dimensions
+
+# Create a Hero instance and pass necessary parameters
+hero = Hero("HeroName", 100, 10, 20, 1.5, 0.8, 0.2)
+
+# Create an instance of player controller and pass the hero
+player_controller = PlayerController([400, 300], (50, 50), 2, hero)
+
 #dungeon_generator.generate()
 print(dungeon_generator)
 
@@ -55,8 +68,25 @@ clock = pygame.time.Clock()
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.QUIT
+            pygame.quit()
             exit()
+
+    # Get the current key state
+    key_state = pygame.key.get_pressed()
+
+    # Update the player controller
+    player_controller.update(key_state)
+
+    # Print the current position to the console
+    print("Player Position:", player_controller.get_position())
+
+    #Update the display
+    screen.fill((0, 0, 0))
+
+    # Draw the player at the updated position
+    player_pos = player_controller.get_position()
+    pygame.draw.rect(screen, (255, 255, 255), (*player_pos, *player_controller.size))
+
 
     # Draw the dungeon elements on the screen
     for row_index, row in enumerate(dungeon_generator.get_maze()):
