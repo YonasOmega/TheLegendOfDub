@@ -1,9 +1,13 @@
+import sqlite3
 from Model.Characters.Monsters.Monster import Monster
 import random
 
+
 class Ogre(Monster):
-    def __init__(self, name="Ogre"):
-        super().__init__(name, health=200, min_damage=30, max_damage=60, attack_speed=2, chance_to_hit=0.6, chance_to_heal=0.1)
+    def __init__(self):
+        ogre_data = Ogre.fetch_ogre_data()
+        name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal = ogre_data
+        super().__init__(name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal)
 
     def attack(self, opponent):
         # Optionally, you can override the attack method for the Ogre's specific attack behavior
@@ -16,3 +20,18 @@ class Ogre(Monster):
             print(f"{self._name} missed the attack on {opponent.name}.")
 
     # Optionally, you can add more methods or override existing ones as needed for Ogre-specific behavior
+
+    @staticmethod
+    def fetch_ogre_data():
+        connection = sqlite3.connect("../../db/monsters.db")
+        cur = connection.cursor()
+
+        cur.execute("SELECT * FROM monster WHERE monster_type = 'Ogre'")
+        ogre_data = cur.fetchone()
+
+        connection.close()
+        return ogre_data
+
+
+ogre = Ogre()
+print(ogre)

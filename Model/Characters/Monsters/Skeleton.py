@@ -1,16 +1,33 @@
+import sqlite3
 from Model.Characters.Monsters.Monster import Monster
 import random
 
 class Skeleton(Monster):
-    def __init__(self, name="Skeleton"):
-        super().__init__(name, health=100, min_damage=30, max_damage=50, attack_speed=3, chance_to_hit=0.8, chance_to_heal=0.3)
+    def __init__(self):
+        skeleton_data = Skeleton.fetch_skeleton_data()
+        name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal = skeleton_data
+        super().__init__(name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal)
 
     def attack(self, opponent):
         if self.can_attack():
             damage = random.randint(self._min_damage, self._max_damage)
             opponent.receive_damage(damage)
             print(f"{self._name} attacked {opponent.name} for {damage} damage.")
-            self.heal()  # The Skeleton has a chance to heal after any attack
+            self.heal()
         else:
             print(f"{self._name} missed the attack on {opponent.name}.")
 
+    @staticmethod
+    def fetch_skeleton_data():
+        connection = sqlite3.connect("../../db/monsters.db")
+        cur = connection.cursor()
+
+        cur.execute("SELECT * FROM monster WHERE monster_type = 'Skeleton'")
+        skeleton_data = cur.fetchone()
+
+        connection.close()
+        return skeleton_data
+
+# Example of instantiating a Skeleton
+skeleton = Skeleton()
+print(skeleton)

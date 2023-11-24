@@ -1,17 +1,33 @@
+import sqlite3
 from Model.Characters.Monsters.Monster import Monster
 import random
 
 class Gremlin(Monster):
-    def __init__(self, name="Gremlin"):
-        super().__init__(name, health=70, min_damage=15, max_damage=30, attack_speed=5, chance_to_hit=0.8, chance_to_heal=0.4)
+    def __init__(self):
+        gremlin_data = Gremlin.fetch_gremlin_data()
+        name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal = gremlin_data
+        super().__init__(name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal)
 
     def attack(self, opponent):
-        # can override the attack method for the Gremlin's specific attack behavior
         if self.can_attack():
             damage = random.randint(self._min_damage, self._max_damage)
             opponent.receive_damage(damage)
             print(f"{self._name} attacked {opponent.name} for {damage} damage.")
-            self.heal()  # The Gremlin has a chance to heal after any attack
+            self.heal()
         else:
             print(f"{self._name} missed the attack on {opponent.name}.")
 
+    @staticmethod
+    def fetch_gremlin_data():
+        connection = sqlite3.connect("../../db/monsters.db")
+        cur = connection.cursor()
+
+        cur.execute("SELECT * FROM monster WHERE monster_type = 'Gremlin'")
+        gremlin_data = cur.fetchone()
+
+        connection.close()
+        return gremlin_data
+
+# Example of instantiating a Gremlin
+gremlin = Gremlin()
+print(gremlin)
