@@ -1,4 +1,4 @@
-from Model.Characters.Heroes import Hero
+from Model.Characters.hero.Heroes import Hero
 import random
 
 class Thief(Hero):

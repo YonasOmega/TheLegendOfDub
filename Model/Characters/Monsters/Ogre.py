@@ -1,4 +1,4 @@
-from Model.Characters.Monster import Monster
+from Model.Characters.Monsters.Monster import Monster
 import random
 
 class Ogre(Monster):
