@@ -1,12 +1,12 @@
-class Pillar():
+class Pillar:
     def __init__(self, pillar: str):
-        self.pillar = pillar
+        self.__pillar = pillar
 
     @property
     def pillar(self):
-        return self.pillar
+        return self.__pillar
 
     @pillar.setter
     def pillar(self, value):
-        self._pillar = value
+        self.__pillar = value
 

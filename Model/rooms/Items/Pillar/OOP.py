@@ -23,3 +23,9 @@ class Polymorphism(Pillar):
     # Do something
     def __init__(self):
         super().__init__("Polymorphism")
+
+
+poly = Polymorphism()
+print(poly.pillar)
+poly.pillar = "value"
+print(poly.pillar)
