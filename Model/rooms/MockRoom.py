@@ -1,6 +1,6 @@
 import random
 
-from Model.rooms.Items.Health_Potion import Health_Potion
+from Model.rooms.Items.potion.Health_Potion import Health_Potion
 
 class MockRoom():
 
