@@ -25,7 +25,7 @@ class Polymorphism(Pillar):
         super().__init__("Polymorphism")
 
 
-poly = Polymorphism()
-print(poly.pillar)
-poly.pillar = "value"
-print(poly.pillar)
+# poly = Polymorphism()
+# print(poly.pillar)
+# poly.pillar = "value"
+# print(poly.pillar)

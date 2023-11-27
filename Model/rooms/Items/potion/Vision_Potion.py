@@ -38,7 +38,7 @@ class Vision_Potion(Item):
         return string
 """
 
-potion = Vision_Potion()
-print(potion)
-effect = potion.effect(Dungeon=DungeonGenerator(10, 10))
-print(effect)
+# potion = Vision_Potion()
+# print(potion)
+# effect = potion.effect(Dungeon=DungeonGenerator(10, 10))
+# print(effect)

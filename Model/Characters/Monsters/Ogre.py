@@ -24,6 +24,7 @@ class Ogre(Monster):
     @staticmethod
     def fetch_ogre_data():
         connection = sqlite3.connect("../../db/monsters.db")
+        #connection = sqlite3.connect("/Users/billy/2023-2024/Fall/360/LegendOfDub/Model/db/monsters.db")
         cur = connection.cursor()
 
         cur.execute("SELECT * FROM monster WHERE monster_type = 'Ogre'")
@@ -32,6 +33,6 @@ class Ogre(Monster):
         connection.close()
         return ogre_data
 
-
-ogre = Ogre()
-print(ogre)
+#
+# ogre = Ogre()
+# print(ogre)

@@ -10,3 +10,6 @@ class Pillar:
     def pillar(self, value):
         self.__pillar = value
 
+    def __str__(self):
+        return f"{self.__pillar}"
+

@@ -1,4 +1,5 @@
 import random
+import sqlite3
 
 from Model.rooms.Items.potion.Health_Potion import Health_Potion
 from Model.rooms.Items.potion.Vision_Potion import Vision_Potion
@@ -22,12 +23,16 @@ class Room:
         self.__monster = None
         self.__pillar = None
 
+    def generate(self, special: str, position: tuple):
+        self.generate_special(special, tuple)
+
+
     def generate_non_special(self):
         self.generate_potion()
         self.generate_pit()
         self.generate_monster()
 
-    def generate_pillar(self,special: str):
+    def generate_pillar(self, special: str):
         if special == "E":
             self.make_encapsulation()
         elif special == "P":
@@ -173,4 +178,10 @@ class Room:
     # Room stats #
 
     def stat(self):
-        return False
+        print(f"potion: {self.potion} \n monster: {self.monster} \n pit: {self.pit} \n pillar: {self.pillar}"
+              f"\n entrance: {self.entrance} \n exit: {self.exit}")
+
+
+room = Room()
+room.generate("A", (0, 0))
+room.stat()
