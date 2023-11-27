@@ -15,6 +15,11 @@ class Hero(DungeonCharacter):
     def block_attack(self):
         return random.random() < self.chance_to_block
 
+    def receive_damage(self, damage):
+        pass
+        # if blockattack true, no damage, otherwise get damage
+        # apply to monsters as well
+
     def is_valid_movement(self, new_position, dungeon_generator):
         # Implement logic to check if the new_position is valid in the dungeon
         # You might want to check if the new_position is within the boundaries of the dungeon

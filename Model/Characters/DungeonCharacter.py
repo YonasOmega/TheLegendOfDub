@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 import random
 
 
@@ -24,12 +24,26 @@ class DungeonCharacter(ABC):
         return random.randint(self._min_damage, self._max_damage)
 
     def perform_attack(self, opponent):
-        if self.can_attack():
-            damage = self.calculate_damage()
-            opponent.receive_damage(damage)
-            return f"{self._name} successfully attacked {opponent.name} for {damage} damage."
-        else:
-            return f"{self._name} missed the attack on {opponent.name}."
+        attack_count = self.calculate_attack_count(opponent)
+
+        damage_total = 0 # in case of tracking the total damage the character cause in 1 turn
+        attack_messages = []
+
+        for _ in range(attack_count):
+            if self.can_attack():
+                damage = self.calculate_damage()
+                opponent.receive_damage(damage)
+                damage_total += damage
+                attack_messages.append(f"{self._name} successfully attacked {opponent.get_name()} for {damage} damage.")
+            else:
+                attack_messages.append(f"{self._name} missed the attack on {opponent.get_name()}.")
+
+        return attack_messages, damage_total
+
+    def calculate_attack_count(self, opponent):
+        # Calculate the number of attacks based on attack speed ratio
+        attack_count = int(self._attack_speed / opponent.get_attack_speed())
+        return max(attack_count, 1)  # Ensure at least one attack per round
 
     def receive_damage(self, damage):
         self._health -= damage
