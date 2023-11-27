@@ -2,16 +2,127 @@ import pygame
 
 from Controller.Controller import PlayerController
 from Model.DungeonGenerator import DungeonGenerator
-from Model.Characters.Heroes import Hero
+from Model.Characters.Warrior import Warrior
+from Model.Characters.Thief import Thief
+from Model.Characters.Priestess import Priestess
+from View import GameState
+
 
 pygame.init()
+def intro_screen():
+    intro = True
+
+    # Define Load Game Button Area
+    load_game_button_area = pygame.Rect(150, 320, 100, 50)
+
+    while intro:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            # Check for mouse button down event
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse = pygame.mouse.get_pos()
+                if 150 + 100 > mouse[0] > 150 and 250 + 50 > mouse[1] > 250:
+                    intro = False  # Start the game
+
+                    # Check for clicks on "Load Game"
+                    if load_game_button_area.collidepoint(mouse):
+                        try:
+                            loaded_data = GameState.load_game()
+                            # Now use loaded_data to set up the game state
+                            intro = False
+                        except FileNotFoundError:
+                            print("No saved game found.")
+                            # Handle the case where no saved game is available
+
+        # Fill the screen with a background color
+        screen.fill((0, 0, 0))
+
+        # Display the game title
+        font = pygame.font.Font(None, 74)
+        text = font.render("The Legend of Dub", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(screen_width // 2, screen_height // 4))
+        screen.blit(text, text_rect)
+
+        # New Game Button
+        mouse = pygame.mouse.get_pos()
+        if 150 + 100 > mouse[0] > 150 and 250 + 50 > mouse[1] > 250:
+            pygame.draw.rect(screen, (0, 255, 0), [150, 250, 100, 50])
+        else:
+            pygame.draw.rect(screen, (0, 200, 0), [150, 250, 100, 50])
+
+        small_font = pygame.font.Font(None, 35)
+        text_new = small_font.render("New Game", True, (255, 255, 255))
+        screen.blit(text_new, [160, 260])
+
+        # Load Game Button (placeholder for future implementation)
+        pygame.draw.rect(screen, (200, 200, 0), [150, 320, 100, 50])
+        text_load = small_font.render("Load Game", True, (255, 255, 255))
+        screen.blit(text_load, [155, 330])
+
+        pygame.display.update()
+        clock.tick(15)  # Control the loop run speed
+def character_selection_screen():
+    selection = True
+    font = pygame.font.Font(None, 50)
+
+    # Define button positions and sizes
+    button_width = 200
+    button_height = 50
+    start_x = screen_width // 2 - button_width // 2
+    start_y = screen_height // 2 - (3 * button_height + 20) // 2
+
+    while selection:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse = pygame.mouse.get_pos()
+                # Check for clicks on each hero's button
+                if start_x <= mouse[0] <= start_x + button_width:
+                    if start_y <= mouse[1] <= start_y + button_height:
+                        return Warrior("WarriorName")
+                    elif start_y + button_height + 10 <= mouse[1] <= start_y + 2 * button_height + 10:
+                        return Thief("ThiefName")
+                    elif start_y + 2 * (button_height + 10) <= mouse[1] <= start_y + 3 * button_height + 20:
+                        return Priestess("PriestessName")
+
+        # Get the current mouse position
+        mouse = pygame.mouse.get_pos()
+
+        # Fill the screen with a background color
+        screen.fill((0, 0, 0))
+
+        # Check if the mouse is hovering over a button and change color
+        warrior_color = (0, 255, 0) if start_x <= mouse[0] <= start_x + button_width and start_y <= mouse[1] <= start_y + button_height else (0, 200, 0)
+        thief_color = (255, 0, 0) if start_x <= mouse[0] <= start_x + button_width and start_y + button_height + 10 <= mouse[1] <= start_y + 2 * button_height + 10 else (200, 0, 0)
+        priestess_color = (0, 0, 255) if start_x <= mouse[0] <= start_x + button_width and start_y + 2 * (button_height + 10) <= mouse[1] <= start_y + 3 * button_height + 20 else (0, 0, 200)
+
+        # Draw buttons with the appropriate color based on hover state
+        pygame.draw.rect(screen, warrior_color, [start_x, start_y, button_width, button_height])  # Warrior
+        pygame.draw.rect(screen, thief_color, [start_x, start_y + button_height + 10, button_width, button_height])  # Thief
+        pygame.draw.rect(screen, priestess_color, [start_x, start_y + 2 * (button_height + 10), button_width, button_height])  # Priestess
+
+        # Text for each hero type
+        warrior_text = font.render("Warrior", True, (255, 255, 255))
+        thief_text = font.render("Thief", True, (255, 255, 255))
+        priestess_text = font.render("Priestess", True, (255, 255, 255))
+
+        screen.blit(warrior_text, (start_x + 10, start_y + 10))
+        screen.blit(thief_text, (start_x + 10, start_y + button_height + 20))
+        screen.blit(priestess_text, (start_x + 10, start_y + 2 * (button_height + 20)))
+
+        pygame.display.update()
+        clock.tick(15)  # Control the loop run speed
+
 
 # Set the window size
 screen_width = 470
 screen_height = 480
-
-# Create an instance of player controller
-player_controller = PlayerController([400, 300], (50, 50), 2)
 
 
 # Image
@@ -39,11 +150,6 @@ pygame.display.set_caption("LegendOfDub")
 # Create a DungeonGenerator instance
 dungeon_generator = DungeonGenerator(10, 10)  # Set appropriate dimensions
 
-# Create a Hero instance and pass necessary parameters
-hero = Hero("HeroName", 100, 10, 20, 1.5, 0.8, 0.2)
-
-# Create an instance of player controller and pass the hero
-player_controller = PlayerController([400, 300], (50, 50), 2, hero)
 
 #dungeon_generator.generate()
 print(dungeon_generator)
@@ -64,6 +170,15 @@ element_images = {
 #Have a clock so we can so it to 60fps
 clock = pygame.time.Clock()
 
+#Intro Screen
+intro_screen()
+
+#Character Selection Screen
+selected_hero = character_selection_screen()
+
+# Create an instance of player controller and pass the hero
+player_controller = PlayerController([400, 300], (50, 50), 2, selected_hero, dungeon_generator)
+
 # Keep the window open until the user closes it
 while True:
     for event in pygame.event.get():
@@ -77,8 +192,6 @@ while True:
     # Update the player controller
     player_controller.update(key_state)
 
-    # Print the current position to the console
-    print("Player Position:", player_controller.get_position())
 
     #Update the display
     screen.fill((0, 0, 0))
