@@ -28,3 +28,11 @@ class Hero(DungeonCharacter):
             return True
         else:
             return False
+
+    def attack(self, opponent): #placeholder
+        # Implement attack logic here
+        pass
+
+    def special_skill(self, opponent):  #placeholder
+        # Implement special skill logic here
+        pass

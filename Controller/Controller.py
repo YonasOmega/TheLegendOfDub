@@ -3,11 +3,12 @@ import pygame
 
 class PlayerController:
     # Initialize the player controller
-    def __init__(self, start_pos, size, speed, heroes_model):
+    def __init__(self, start_pos, size, speed, heroes_model, dungeon_generator):
         self.position = start_pos
         self.size = size
         self.speed = speed
         self.heroes_model = heroes_model #refers to heroes model
+        self.dungeon_generator = dungeon_generator
 
     # Moves the player in given direction
     def move(self, direction):
@@ -22,7 +23,7 @@ class PlayerController:
             new_position[0] += self.speed
 
         # Check with heroes model if the movement is valid
-        if self.heroes_model.is_valid_movement(new_position):
+        if self.heroes_model.is_valid_movement(new_position, self.dungeon_generator): #pass dungeon generator
             self.position = new_position
 
     # Gets the current position of the player

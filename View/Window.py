@@ -10,9 +10,6 @@ pygame.init()
 screen_width = 470
 screen_height = 480
 
-# Create an instance of player controller
-player_controller = PlayerController([400, 300], (50, 50), 2)
-
 
 # Image
 path_image = pygame.image.load("../Assets/brown_field/brown_field_detailed.png")
@@ -37,7 +34,7 @@ dungeon_generator = DungeonGenerator(10, 10)  # Set appropriate dimensions
 hero = Hero("HeroName", 100, 10, 20, 1.5, 0.8, 0.2)
 
 # Create an instance of player controller and pass the hero
-player_controller = PlayerController([400, 300], (50, 50), 2, hero)
+player_controller = PlayerController([400, 300], (50, 50), 2, hero, dungeon_generator)
 
 #dungeon_generator.generate()
 print(dungeon_generator)
@@ -80,6 +77,8 @@ while True:
     player_pos = player_controller.get_position()
     pygame.draw.rect(screen, (255, 255, 255), (*player_pos, *player_controller.size))
 
+    # Update the player controller
+    player_controller.update(key_state)
 
     # Draw the dungeon elements on the screen
     for row_index, row in enumerate(dungeon_generator.get_maze()):
