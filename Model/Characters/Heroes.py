@@ -15,16 +15,24 @@ class Hero(DungeonCharacter):
     def block_attack(self):
         return random.random() < self.chance_to_block
 
-    def is_valid_movement(self, new_position, dungeon_generator):
+    def is_valid_movement(self, grid_position, dungeon_generator):
         # Implement logic to check if the new_position is valid in the dungeon
         # You might want to check if the new_position is within the boundaries of the dungeon
         # and if it doesn't collide with obstacles.
 
         # Example: Check if the new position is within the dungeon boundaries
-        dungeon_width = len(dungeon_generator.get_maze()[0])
-        dungeon_height = len(dungeon_generator.get_maze())
+        maze = dungeon_generator.get_maze()
+        dungeon_width = len(maze[0])
+        dungeon_height = len(maze)
+        print("Validating position:", grid_position, " Cell value:", maze[grid_position[1]][grid_position[0]])
+        if 0 <= grid_position[0] < dungeon_width and 0 <= grid_position[1] < dungeon_height:
+            return maze[grid_position[1]][grid_position[0]] == '1'
 
-        if 0 <= new_position[0] < dungeon_width and 0 <= new_position[1] < dungeon_height:
-            return True
-        else:
-            return False
+        return False
+
+    def attack(self, opponent): #placeholder
+        #implement attack logic
+        pass
+    def special_skill(self, opponent): #placeholder
+        #implement special skill logic
+        pass
