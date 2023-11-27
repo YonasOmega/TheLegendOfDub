@@ -1,6 +1,4 @@
-import random
-
-from Model.Characters.Heroes import Hero
+from Model.Characters.hero.Heroes import Hero
 from Model.Characters.DungeonCharacter import DungeonCharacter
 
 

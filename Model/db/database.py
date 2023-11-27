@@ -8,14 +8,15 @@ cur = connection.cursor()
 
 # create monster table
 monsters = """CREATE TABLE IF NOT EXISTS
-monster(monster_type TEXT PRIMARY KEY, health INTEGER, strength INTEGER, speed INTEGER)"""
+monster(monster_type TEXT PRIMARY KEY, health INTEGER, min_damage INTEGER, max_damage INTEGER, attack_speed INTEGER, chance_to_hit NUMERIC, chance_to_heal NUMERIC)"""
 
 cur.execute(monsters)
 
 # Inserting into stores
-cur.execute("INSERT INTO monster (monster_type, health, strength, speed) VALUES ('Ogre', 20, 3, 2)")
-cur.execute("INSERT INTO monster (monster_type, health, strength, speed) VALUES ('Goblin', 10, 2, 4)")
-cur.execute("INSERT INTO monster (monster_type, health, strength, speed) VALUES ('Skeleton', 1, 1, 2)")
+cur.execute("INSERT INTO monster (monster_type, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal) VALUES ('Ogre', 200, 30, 60, 2, 0.6, 0.1)")
+cur.execute("INSERT INTO monster (monster_type, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal) VALUES ('Gremlin', 70, 15, 30, 5, 0.8, 0.4)")
+cur.execute("INSERT INTO monster (monster_type, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal) VALUES ('Skeleton', 100, 30, 50, 3, 0.8, 0.3)")
+
 #
 # # create monster table
 # hero = """CREATE TABLE IF NOT EXISTS

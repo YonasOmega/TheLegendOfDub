@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Model.Characters.Heroes import Hero
+from Model.Characters.hero.Heroes import Hero
 
 
 class Item(ABC):
