@@ -13,18 +13,24 @@ class PlayerController:
     # Moves the player in given direction
     def move(self, direction):
         new_position = self.position.copy()
+        move_x = 47  # Horizontal movement increment (width of one cell)
+        move_y = 48  # Vertical movement increment (height of one cell)
         if direction == "UP":
-            new_position[1] -= self.speed
+            new_position[1] -= move_y
         elif direction == "DOWN":
-            new_position[1] += self.speed
+            new_position[1] += move_y
         elif direction == "LEFT":
-            new_position[0] -= self.speed
+            new_position[0] -= move_x
         elif direction == "RIGHT":
-            new_position[0] += self.speed
+            new_position[0] += move_x
+
+        # Convert pixel position to grid coordinates
+        grid_position = [new_position[0] // 47, new_position[1] // 48]
 
         # Check with heroes model if the movement is valid
-        if self.heroes_model.is_valid_movement(new_position, self.dungeon_generator): #pass dungeon generator
+        if self.heroes_model.is_valid_movement(grid_position, self.dungeon_generator):
             self.position = new_position
+        print("Trying to move to:", new_position, " Grid position:", grid_position)
 
     # Gets the current position of the player
     def get_position(self):
