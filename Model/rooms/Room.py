@@ -59,15 +59,19 @@ class Room:
 
     def make_encapsulation(self):
         self.__pillar = Encapsulation()
+        self.__monster = Ogre()
 
     def make_polymorphism(self):
         self.__pillar = Polymorphism()
+        self.__monster = Ogre()
 
     def make_inheritance(self):
         self.__pillar = Inheritance()
+        self.__monster = Ogre()
 
     def make_abstraction(self):
         self.__pillar = Abstraction()
+        self.__monster = Ogre()
 
     # -------- Potion --------- #
     @property
@@ -183,5 +187,5 @@ class Room:
 
 
 room = Room()
-room.generate("A", (0, 0))
+room.generate("I", (0, 0))
 room.stat()

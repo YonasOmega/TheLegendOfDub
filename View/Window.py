@@ -2,9 +2,9 @@ import pygame
 
 from Controller.Controller import PlayerController
 from Model.DungeonGenerator import DungeonGenerator
-from Model.Characters.Warrior import Warrior
-from Model.Characters.Thief import Thief
-from Model.Characters.Priestess import Priestess
+from Model.Characters.hero.Warrior import Warrior
+from Model.Characters.hero.Thief import Thief
+from Model.Characters.hero.Priestess import Priestess
 from View import GameState
 
 
