@@ -12,12 +12,13 @@ class DungeonCharacter(ABC):
         self._attack_speed = attack_speed
         self._chance_to_hit = chance_to_hit
         self._turns = None
+        self.__position = None
 
     # @abstractmethod
     # def attack(self, opponent):
     #     pass
 
-    def can_attack(self):  #hit or miss
+    def can_attack(self):  # hit or miss
         return random.random() < self._chance_to_hit
 
     def calculate_damage(self):
@@ -26,7 +27,7 @@ class DungeonCharacter(ABC):
     def perform_attack(self, opponent):
         attack_count = self.calculate_attack_count(opponent)
 
-        damage_total = 0 # in case of tracking the total damage the character cause in 1 turn
+        damage_total = 0  # in case of tracking the total damage the character cause in 1 turn
         attack_messages = []
 
         for _ in range(attack_count):
@@ -64,7 +65,29 @@ class DungeonCharacter(ABC):
         return self._attack_speed
 
     def turns(self, opponent):
-        self._turns = self._attack_speed/opponent.get_attack_speed
+        self._turns = self._attack_speed / opponent.get_attack_speed
 
     def __str__(self):
         return f"Name: {self._name}, Health: {self._health}"
+
+    # Position class. It's meant to either get the position or set a position
+    @property
+    def position(self):
+        if self.__position is None:
+            raise ValueError("Position has not been set")
+        return self.__position
+
+    @position.setter
+    def position(self, value):
+        if value is None:
+            raise ValueError("Position cannot be set to None")
+        elif not isinstance(value, tuple):
+            raise TypeError("Position must be a tuple")
+        elif len(value) != 2:
+            raise ValueError("Position must be a tuple of two elements (x, y)")
+        elif not all(isinstance(num, int) for num in value):
+            raise TypeError("Position coordinates must be integers")
+        elif not all(num >= 0 for num in value):
+            raise ValueError("Position coordinates must be non-negative")
+        else:
+            self.__position = value
