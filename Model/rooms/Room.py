@@ -24,7 +24,7 @@ class Room:
         self.__pillar = None
 
     def generate(self, special: str, position: tuple):
-        self.generate_special(special, tuple)
+        self.generate_special(special, position)
 
 
     def generate_non_special(self):
@@ -174,18 +174,19 @@ class Room:
         return center
 
     def __str__(self):
-        String = self.north() + "\n"
-        String = String + self.center() + "\n"
-        String = String + self.south() + "\n"
-        return String
+        # String = self.north() + "\n"
+        # String = String + self.center() + "\n"
+        # String = String + self.south() + "\n"
+        # return String
+        self.stat()
 
     # Room stats #
 
     def stat(self):
-        print(f"potion: {self.potion} \n monster: {self.monster} \n pit: {self.pit} \n pillar: {self.pillar}"
-              f"\n entrance: {self.entrance} \n exit: {self.exit}")
+        return f"potion: {self.potion} \n monster: {self.monster} \n pit: {self.pit} \n pillar: {self.pillar}\n" \
+               f"entrance: {self.entrance} \n exit: {self.exit}"
 
 
-room = Room()
-room.generate("I", (0, 0))
-room.stat()
+# room = Room()
+# room.generate("I", (0, 0))
+# room.stat()

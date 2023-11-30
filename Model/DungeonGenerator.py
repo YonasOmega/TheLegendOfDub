@@ -48,7 +48,7 @@ class DungeonGenerator:
         self.generate()
 
     def random_position(self):
-        return random.randint(0, self.__Row - 1), random.randint(0, self.__Col - 1)
+        return random.randint(0, self.__Col - 1), random.randint(0, self.__Row - 1)
 
     def generate(self):
         self.generate_maze()
@@ -78,7 +78,8 @@ class DungeonGenerator:
         while not spaced_entrance_and_exit(entrance, exit):
             exit = self.random_position()
 
-        self.__Maze[entrance.__getitem__(0)][entrance.__getitem__(1)] = 'X'
+        #self.__Maze[entrance.__getitem__(0)][entrance.__getitem__(1)] = 'X'
+        self.__Maze[entrance[0]][entrance[1]] = 'X'
         self.__Maze[exit.__getitem__(0)][exit.__getitem__(1)] = 'Y'
         self.__PathPositions.add(entrance)
         self.__PathPositions.add(exit)
@@ -137,6 +138,7 @@ class DungeonGenerator:
                     return False  # The position is not suitable for a pillar
 
         return True  # The position is suitable for a pillar
+
     def generate_maze(self):
         # Create a 2D array with all elements initialized to 0
         self.__Maze = [['0' for _ in range(self.__Row)] for _ in range(self.__Col)]

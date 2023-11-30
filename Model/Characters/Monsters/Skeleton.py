@@ -30,8 +30,8 @@ class Skeleton(Monster):
     @staticmethod
     def fetch_skeleton_data():
         try:
-            connection = sqlite3.connect("../../db/monsters.db")
-            #connection = sqlite3.connect("/Users/billy/2023-2024/Fall/360/LegendOfDub/Model/db/monsters.db")
+            #connection = sqlite3.connect("../../db/monsters.db")
+            connection = sqlite3.connect("/Users/billy/2023-2024/Fall/360/LegendOfDub/Model/db/monsters.db")
         except sqlite3.OperationalError as e:
             print(f"Error opening database: {e}")
             return None
