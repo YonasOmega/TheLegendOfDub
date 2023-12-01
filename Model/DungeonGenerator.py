@@ -12,10 +12,10 @@ import random
 """
 
 """
-        Column0 | Column1 | Column2
-row0    x[0][0] | x[0][1] | x[0][2]
-row1    x[1][0] | x[1][1] | x[1][2]
-row2    x[2][0] | x[2][1] | x[2][2]
+        Row0 | ROw1 | Row2
+Col0    x[0][0] | x[0][1] | x[0][2]
+Col1    x[1][0] | x[1][1] | x[1][2]
+Col2    x[2][0] | x[2][1] | x[2][2]
 """
 
 
