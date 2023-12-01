@@ -56,8 +56,6 @@ class DungeonGenerator:
         self.generate_pillars()
         self.pillar_to_path()
 
-
-
     def __str__(self):
         # Convert each row of the maze to a string and then join all rows
         string = ""
@@ -78,7 +76,7 @@ class DungeonGenerator:
         while not spaced_entrance_and_exit(entrance, exit):
             exit = self.random_position()
 
-        #self.__Maze[entrance.__getitem__(0)][entrance.__getitem__(1)] = 'X'
+        # self.__Maze[entrance.__getitem__(0)][entrance.__getitem__(1)] = 'X'
         self.__Maze[entrance[0]][entrance[1]] = 'X'
         self.__Maze[exit.__getitem__(0)][exit.__getitem__(1)] = 'Y'
         self.__PathPositions.add(entrance)
@@ -86,7 +84,7 @@ class DungeonGenerator:
         self.__ent_exi.add(entrance)
         self.__ent_exi.add(exit)
 
-        #path portions
+        # path portions
         self.point_to_point(entrance, exit)
 
     def point_to_point(self, tuple1: tuple, tuple2: tuple):
@@ -145,7 +143,6 @@ class DungeonGenerator:
         # self.__Maze[0][1] = '1'
         # self.__Maze[0][2] = '1'
 
-
     def get_Pill_Pos(self):
         print(f"Pillars : {self.__PillarPosition}")
 
@@ -156,9 +153,8 @@ class DungeonGenerator:
         return self.__Maze
 
 
-
 # Example usage
-#dun = DungeonGenerator(10, 10)
-#print(dun)
+# dun = DungeonGenerator(5, 5)
+# print(dun)
 # dun.get_Path_Pos()
 # dun.get_Pill_Pos()

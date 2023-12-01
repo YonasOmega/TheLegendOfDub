@@ -9,14 +9,16 @@ class Dungeon:
         self.__maze = self.__dungeon.get_maze()
         self.__maze_rooms = [[None for _ in range(row)] for _ in range(col)]
         self.fill_maze()
-        print("stop")
+        self.__player_entrance_location = None
 
     def fill_maze(self):
         for col in range(len(self.__maze)):
             for row in range(len(self.__maze[col])):
-                room = Room()
-                room.generate(self.__maze[col][row], (col, row))
+                room = Room((col, row))
+                room.generate(self.__maze[col][row])
                 self.__maze_rooms[col][row] = room
+                if self.__maze[col][row] == "X":
+                    self.__player_entrance_location = (col, row)
 
     def get_room(self, col, row):
         if 0 <= col < len(self.__maze_rooms) and 0 <= row < len(self.__maze_rooms[col]):
@@ -24,12 +26,19 @@ class Dungeon:
         else:
             return None  # or handle this case as you see fit
 
+    @property
+    def player_location(self):
+        return self.__player_entrance_location
+
+    def get_maze_raw(self):
+        return self.__dungeon
+
 
 # Usage
-dungeon = Dungeon(11, 12)
+dungeon = Dungeon(5, 5)
+print(dungeon.get_maze_raw())
 specific_room = dungeon.get_room(5, 5)  # Get room at col 5, row 5
 if specific_room:
     print(specific_room.stat())  # Access Room's stat method
 
-
-
+print(dungeon.player_location)

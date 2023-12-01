@@ -68,7 +68,7 @@ class DungeonCharacter(ABC):
         self._turns = self._attack_speed / opponent.get_attack_speed
 
     def __str__(self):
-        return f"Name: {self._name}, Health: {self._health}"
+        return f"Name: {self._name}, Health: {self._health}, Position: {self.__position}"
 
     # Position class. It's meant to either get the position or set a position
     @property
