@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from Controller.Controller import PlayerController
@@ -122,7 +124,7 @@ def character_selection_screen():
 
 # Set the window size
 screen_width = 470
-screen_height = 480
+screen_height = 470
 
 
 # Image
@@ -176,8 +178,12 @@ intro_screen()
 #Character Selection Screen
 selected_hero = character_selection_screen()
 
-# Create an instance of player controller and pass the hero
-player_controller = PlayerController([400, 300], (50, 50), 2, selected_hero, dungeon_generator)
+valid_paths = dungeon_generator.get_Path_Pos()
+start_grid_pos = random.choice(list(valid_paths))  # Grid position
+
+# Convert grid position to pixel position for player start
+start_pixel_pos = [start_grid_pos[1] * 47, start_grid_pos[0] * 47]
+player_controller = PlayerController(start_pixel_pos, (47, 47), 2, selected_hero, dungeon_generator)
 
 # Keep the window open until the user closes it
 while True:
@@ -202,13 +208,13 @@ while True:
     # Draw the dungeon elements on the screen
     for row_index, row in enumerate(dungeon_generator.get_maze()):
         for col_index, element in enumerate(row):
-            position = (col_index, row_index)
+            position = (row_index, col_index)
             if position in path_positions:
                 # Draw a red rectangle for path positions
-                pygame.draw.rect(screen, (255, 0, 0), (col_index * 47, row_index * 48, 47, 48))
+                pygame.draw.rect(screen, (255, 0, 0), (col_index * 47, row_index * 47, 47, 47))
             elif element in element_images:
                 # Draw the element image for non-path positions
-                screen.blit(element_images[element], (col_index * 47, row_index * 48))
+                screen.blit(element_images[element], (col_index * 47, row_index * 47))
 
     # Draw the player at the updated position
     player_pos = player_controller.get_position()
