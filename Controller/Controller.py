@@ -39,13 +39,23 @@ class PlayerController:
     # Updates the player position based of the key state
     def update(self, key_state):
         if key_state[pygame.K_UP] or key_state[pygame.K_w]:
-            self.move("UP")
+            if not self.key_held:
+                self.move("UP")
+                self.key_held = True
         elif key_state[pygame.K_DOWN] or key_state[pygame.K_s]:
-            self.move("DOWN")
+            if not self.key_held:
+                self.move("DOWN")
+                self.key_held = True
         elif key_state[pygame.K_LEFT] or key_state[pygame.K_a]:
-            self.move("LEFT")
+            if not self.key_held:
+                self.move("LEFT")
+                self.key_held = True
         elif key_state[pygame.K_RIGHT] or key_state[pygame.K_d]:
-            self.move("RIGHT")
+            if not self.key_held:
+                self.move("RIGHT")
+                self.key_held = True
+        else:
+            self.key_held = False
 
     # Sets the new speed for the player (CAN BE USED FOR BUFFS/DEBUFFS)
     def set_speed(self, new_speed):  # We can use to update speed for boost

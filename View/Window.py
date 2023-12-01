@@ -2,9 +2,9 @@ import pygame
 
 from Controller.Controller import PlayerController
 from Model.DungeonGenerator import DungeonGenerator
-from Model.Characters.Warrior import Warrior
-from Model.Characters.Thief import Thief
-from Model.Characters.Priestess import Priestess
+from Model.Characters.hero.Warrior import Warrior
+from Model.Characters.hero.Thief import Thief
+from Model.Characters.hero.Priestess import Priestess
 from View import GameState
 
 
@@ -196,18 +196,23 @@ while True:
     #Update the display
     screen.fill((0, 0, 0))
 
-    # Draw the player at the updated position
-    player_pos = player_controller.get_position()
-    pygame.draw.rect(screen, (255, 255, 255), (*player_pos, *player_controller.size))
-
+    # Get the path positions from the DungeonGenerator
+    path_positions = dungeon_generator.get_Path_Pos()
 
     # Draw the dungeon elements on the screen
     for row_index, row in enumerate(dungeon_generator.get_maze()):
         for col_index, element in enumerate(row):
-            if element in element_images:
+            position = (col_index, row_index)
+            if position in path_positions:
+                # Draw a red rectangle for path positions
+                pygame.draw.rect(screen, (255, 0, 0), (col_index * 47, row_index * 48, 47, 48))
+            elif element in element_images:
+                # Draw the element image for non-path positions
                 screen.blit(element_images[element], (col_index * 47, row_index * 48))
-            elif element != '0':
-                screen.blit( (col_index * 47, row_index * 48))
+
+    # Draw the player at the updated position
+    player_pos = player_controller.get_position()
+    pygame.draw.rect(screen, (0, 255, 0), (*player_pos, *player_controller.size))
 
     pygame.display.update()
     clock.tick(60)  # shouldn't run more than 60 ticks
