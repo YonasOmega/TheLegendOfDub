@@ -3,8 +3,34 @@ import random
 
 
 class DungeonCharacter(ABC):
+    """
+    Abstract base class representing a character in the dungeon game.
+
+    This class provides common attributes and methods for characters in the game, including heroes and monsters.
+    It handles basic functionalities such as attacking, receiving damage, and calculating attack count.
+
+    Attributes:
+        _name (str): The name of the character.
+        _health (int): The health points of the character.
+        _min_damage (int): The minimum damage the character can inflict.
+        _max_damage (int): The maximum damage the character can inflict.
+        _attack_speed (int): The attack speed of the character.
+        _chance_to_hit (float): The probability of the character's attack being successful.
+        _turns (int): Number of turns the character gets in one round.
+        __position (tuple): The (y, x) position of the character in the dungeon.
+    """
 
     def __init__(self, name, health, min_damage, max_damage, attack_speed, chance_to_hit):
+        """
+        Initializes a DungeonCharacter with specified attributes.
+
+        :param name: Name of the character.
+        :param health: Health points of the character.
+        :param min_damage: Minimum damage the character can inflict.
+        :param max_damage: Maximum damage the character can inflict.
+        :param attack_speed: Speed at which the character can attack.
+        :param chance_to_hit: Probability of the character's attack being successful.
+        """
         self._name = name
         self._health = health
         self._min_damage = min_damage
@@ -19,9 +45,15 @@ class DungeonCharacter(ABC):
     #     pass
 
     def can_attack(self):  # hit or miss
+        """
+        Determine if the character can successfully execute an attack.
+
+        :return: True if the attack is successful, False otherwise.
+        """
         return random.random() < self._chance_to_hit
 
     def calculate_damage(self):
+
         return random.randint(self._min_damage, self._max_damage)
 
     def perform_attack(self, opponent):
@@ -73,12 +105,23 @@ class DungeonCharacter(ABC):
     # Position class. It's meant to either get the position or set a position
     @property
     def position(self):
+        """
+        Determine if the character can successfully execute an attack.
+
+        :return: True if the attack is successful, False otherwise.
+        """
         if self.__position is None:
             raise ValueError("Position has not been set")
         return self.__position
 
     @position.setter
     def position(self, value):
+        """
+        Set the position of the character.
+
+        :param value: A tuple of two integers representing the new position (x, y) of the character.
+        :raises ValueError: If the value is None, not a tuple, or has invalid coordinates.
+        """
         if value is None:
             raise ValueError("Position cannot be set to None")
         elif not isinstance(value, tuple):
