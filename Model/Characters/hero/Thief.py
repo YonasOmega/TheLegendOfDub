@@ -2,10 +2,33 @@ from Model.Characters.hero.Heroes import Hero
 import random
 
 class Thief(Hero):
+    """
+    Represents a Thief character in the game.
+
+    The Thief is a specialized type of Hero known for agility and stealth. This class inherits from the Hero class and
+    implements a unique special skill that allows for a surprise attack on the opponent.
+
+    Attributes:
+        Inherits all attributes from the Hero class.
+    """
     def __init__(self, name):
+        """
+        Initializes a Thief with specified attributes.
+
+        :param name: Name of the thief.
+        """
         super().__init__(name, health=75, min_damage=20, max_damage=40, attack_speed=6, chance_to_hit=0.8, chance_to_block=0.4)
 
     def special_skill(self, opponent):
+        """
+        Perform the Thief's special skill: Surprise Attack.
+
+        The Thief has a chance to execute a surprise attack, causing additional damage and gaining an extra turn,
+        get caught and lose the turn, or perform a normal attack.
+
+        :param opponent: The DungeonCharacter object representing the opponent.
+        :return: A string describing the outcome of the surprise attack.
+        """
         # Implement the Surprise Attack special skill
         skill_result = random.random()
 
