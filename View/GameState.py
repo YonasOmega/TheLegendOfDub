@@ -13,7 +13,7 @@ class GameState:
                 'chance_to_hit': player.heroes_model._chance_to_hit,
                 'chance_to_block': player.heroes_model.chance_to_block
             },
-            'maze': dungeon_generator.get_maze()
+            'maze': dungeon_generator.get_maze()  #SAVE THE DUNGEON INSTEAD
         }
 
         with open(file_name, 'wb') as f:
