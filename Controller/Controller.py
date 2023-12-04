@@ -14,7 +14,7 @@ class PlayerController:
     def move(self, direction):
         new_position = self.position.copy()
         move_x = 47  # Horizontal movement increment (width of one cell)
-        move_y = 48  # Vertical movement increment (height of one cell)
+        move_y = 47  # Vertical movement increment (height of one cell)
         if direction == "UP":
             new_position[1] -= move_y
         elif direction == "DOWN":
@@ -25,7 +25,7 @@ class PlayerController:
             new_position[0] += move_x
 
         # Convert pixel position to grid coordinates
-        grid_position = [new_position[0] // 47, new_position[1] // 48]
+        grid_position = [new_position[1] // 47, new_position[0] // 47]
 
         # Check with heroes model if the movement is valid
         if self.heroes_model.is_valid_movement(grid_position, self.dungeon_generator):
@@ -39,13 +39,23 @@ class PlayerController:
     # Updates the player position based of the key state
     def update(self, key_state):
         if key_state[pygame.K_UP] or key_state[pygame.K_w]:
-            self.move("UP")
+            if not self.key_held:
+                self.move("UP")
+                self.key_held = True
         elif key_state[pygame.K_DOWN] or key_state[pygame.K_s]:
-            self.move("DOWN")
+            if not self.key_held:
+                self.move("DOWN")
+                self.key_held = True
         elif key_state[pygame.K_LEFT] or key_state[pygame.K_a]:
-            self.move("LEFT")
+            if not self.key_held:
+                self.move("LEFT")
+                self.key_held = True
         elif key_state[pygame.K_RIGHT] or key_state[pygame.K_d]:
-            self.move("RIGHT")
+            if not self.key_held:
+                self.move("RIGHT")
+                self.key_held = True
+        else:
+            self.key_held = False
 
     # Sets the new speed for the player (CAN BE USED FOR BUFFS/DEBUFFS)
     def set_speed(self, new_speed):  # We can use to update speed for boost

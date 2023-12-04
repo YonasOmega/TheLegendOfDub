@@ -147,7 +147,7 @@ class DungeonGenerator:
         print(f"Pillars : {self.__PillarPosition}")
 
     def get_Path_Pos(self):
-        print(f"Paths : {self.__PathPositions}")
+        return self.__PathPositions
 
     def get_maze(self):
         return self.__Maze
