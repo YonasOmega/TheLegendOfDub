@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from Controller.Controller import PlayerController
@@ -7,9 +9,8 @@ from Model.Characters.hero.Thief import Thief
 from Model.Characters.hero.Priestess import Priestess
 from View import GameState
 
+
 pygame.init()
-
-
 def intro_screen():
     intro = True
 
@@ -65,8 +66,6 @@ def intro_screen():
 
         pygame.display.update()
         clock.tick(15)  # Control the loop run speed
-
-
 def character_selection_screen():
     selection = True
     font = pygame.font.Font(None, 50)
@@ -101,19 +100,14 @@ def character_selection_screen():
         screen.fill((0, 0, 0))
 
         # Check if the mouse is hovering over a button and change color
-        warrior_color = (0, 255, 0) if start_x <= mouse[0] <= start_x + button_width and start_y <= mouse[
-            1] <= start_y + button_height else (0, 200, 0)
-        thief_color = (255, 0, 0) if start_x <= mouse[0] <= start_x + button_width and start_y + button_height + 10 <= \
-                                     mouse[1] <= start_y + 2 * button_height + 10 else (200, 0, 0)
-        priestess_color = (0, 0, 255) if start_x <= mouse[0] <= start_x + button_width and start_y + 2 * (
-                    button_height + 10) <= mouse[1] <= start_y + 3 * button_height + 20 else (0, 0, 200)
+        warrior_color = (0, 255, 0) if start_x <= mouse[0] <= start_x + button_width and start_y <= mouse[1] <= start_y + button_height else (0, 200, 0)
+        thief_color = (255, 0, 0) if start_x <= mouse[0] <= start_x + button_width and start_y + button_height + 10 <= mouse[1] <= start_y + 2 * button_height + 10 else (200, 0, 0)
+        priestess_color = (0, 0, 255) if start_x <= mouse[0] <= start_x + button_width and start_y + 2 * (button_height + 10) <= mouse[1] <= start_y + 3 * button_height + 20 else (0, 0, 200)
 
         # Draw buttons with the appropriate color based on hover state
         pygame.draw.rect(screen, warrior_color, [start_x, start_y, button_width, button_height])  # Warrior
-        pygame.draw.rect(screen, thief_color,
-                         [start_x, start_y + button_height + 10, button_width, button_height])  # Thief
-        pygame.draw.rect(screen, priestess_color,
-                         [start_x, start_y + 2 * (button_height + 10), button_width, button_height])  # Priestess
+        pygame.draw.rect(screen, thief_color, [start_x, start_y + button_height + 10, button_width, button_height])  # Thief
+        pygame.draw.rect(screen, priestess_color, [start_x, start_y + 2 * (button_height + 10), button_width, button_height])  # Priestess
 
         # Text for each hero type
         warrior_text = font.render("Warrior", True, (255, 255, 255))
@@ -130,7 +124,8 @@ def character_selection_screen():
 
 # Set the window size
 screen_width = 470
-screen_height = 480
+screen_height = 470
+
 
 # Image
 path_image = pygame.image.load("../Assets/brown.png")
@@ -151,39 +146,44 @@ screen.fill((0, 0, 0))
 # Update the display
 pygame.display.update()
 
-# have a name for our game
+#have a name for our game
 pygame.display.set_caption("LegendOfDub")
 
 # Create a DungeonGenerator instance
 dungeon_generator = DungeonGenerator(10, 10)  # Set appropriate dimensions
 
-# dungeon_generator.generate()
+
+#dungeon_generator.generate()
 print(dungeon_generator)
 
 # Map the characters to their corresponding images
 element_images = {
-    'X': entrance_image,
-    'Y': exit_image,
+     'X': entrance_image,
+     'Y': exit_image,
     #
-    'A': abstraction_image,
-    'E': encapsulation_image,
-    'I': inheritance_image,
-    'P': polymorphism_image,
+     'A': abstraction_image,
+     'E': encapsulation_image,
+     'I': inheritance_image,
+     'P': polymorphism_image,
     '1': path_image,
     '0': block_background,
 }
 
-# Have a clock so we can so it to 60fps
+#Have a clock so we can so it to 60fps
 clock = pygame.time.Clock()
 
-# Intro Screen
+#Intro Screen
 intro_screen()
 
-# Character Selection Screen
+#Character Selection Screen
 selected_hero = character_selection_screen()
 
-# Create an instance of player controller and pass the hero
-player_controller = PlayerController([400, 300], (50, 50), 2, selected_hero, dungeon_generator)
+valid_paths = dungeon_generator.get_Path_Pos()
+start_grid_pos = random.choice(list(valid_paths))  # Grid position
+
+# Convert grid position to pixel position for player start
+start_pixel_pos = [start_grid_pos[1] * 47, start_grid_pos[0] * 47]
+player_controller = PlayerController(start_pixel_pos, (47, 47), 2, selected_hero, dungeon_generator)
 
 # Keep the window open until the user closes it
 while True:
@@ -198,20 +198,27 @@ while True:
     # Update the player controller
     player_controller.update(key_state)
 
-    # Update the display
+
+    #Update the display
     screen.fill((0, 0, 0))
 
-    # Draw the player at the updated position
-    player_pos = player_controller.get_position()
-    pygame.draw.rect(screen, (255, 255, 255), (*player_pos, *player_controller.size))
+    # Get the path positions from the DungeonGenerator
+    path_positions = dungeon_generator.get_Path_Pos()
 
     # Draw the dungeon elements on the screen
     for row_index, row in enumerate(dungeon_generator.get_maze()):
         for col_index, element in enumerate(row):
-            if element in element_images:
-                screen.blit(element_images[element], (col_index * 47, row_index * 48))
-            elif element != '0':
-                screen.blit((col_index * 47, row_index * 48))
+            position = (row_index, col_index)
+            if position in path_positions:
+                # Draw a red rectangle for path positions
+                pygame.draw.rect(screen, (255, 0, 0), (col_index * 47, row_index * 47, 47, 47))
+            elif element in element_images:
+                # Draw the element image for non-path positions
+                screen.blit(element_images[element], (col_index * 47, row_index * 47))
+
+    # Draw the player at the updated position
+    player_pos = player_controller.get_position()
+    pygame.draw.rect(screen, (0, 255, 0), (*player_pos, *player_controller.size))
 
     pygame.display.update()
     clock.tick(60)  # shouldn't run more than 60 ticks
