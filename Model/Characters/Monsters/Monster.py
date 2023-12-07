@@ -7,6 +7,7 @@ import random
 class Monster(DungeonCharacter, ABC):
     def __init__(self, name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal):
         super().__init__(name, health, min_damage, max_damage, attack_speed, chance_to_hit)
+        # self._position = (0,0)
         self._chance_to_heal = chance_to_heal
 
     @property
@@ -16,6 +17,10 @@ class Monster(DungeonCharacter, ABC):
     @chance_to_heal.setter
     def chance_to_heal(self, value):
         self._chance_to_heal = value
+
+    def move(self):
+        # Implement the logic for Monster movement here
+        print(f"{self._name} is moving.")
 
     def heal(self):
         # A Monster has a chance to heal after any attack that causes a loss of hit points

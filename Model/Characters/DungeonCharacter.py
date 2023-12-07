@@ -74,7 +74,8 @@ class DungeonCharacter(ABC):
     @property
     def position(self):
         if self.__position is None:
-            raise ValueError("Position has not been set")
+            # raise ValueError("Position has not been set")
+            print("no position")
         return self.__position
 
     @position.setter
@@ -91,3 +92,15 @@ class DungeonCharacter(ABC):
             raise ValueError("Position coordinates must be non-negative")
         else:
             self.__position = value
+
+    def get_x_position(self):
+        if self.__position is None:
+            # handle the case where position is not set
+            return None
+        return self.__position[0]
+
+    def get_y_position(self):
+        if self.__position is None:
+            # handle the case where position is not set
+            return None
+        return self.__position[1]
