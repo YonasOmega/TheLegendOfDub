@@ -9,13 +9,23 @@ from Model.Characters.hero.Thief import Thief
 from Model.Characters.hero.Priestess import Priestess
 from View import GameState
 
+from View.GameState import GameState
+
 
 pygame.init()
+pygame.mixer.init()
+
+# Load and play background music
+pygame.mixer.music.load(r'C:\Users\yonas\PycharmProjects\TheLegendOfDub\Assets\Musics\1 - Adventure Begin.ogg')  # Adjust the path to your music file
+pygame.mixer.music.play(-1)  # The '-1' argument makes the music loop indefinitely
+
 def intro_screen():
     intro = True
 
     # Define Load Game Button Area
     load_game_button_area = pygame.Rect(150, 320, 100, 50)
+    new_game_button_area = pygame.Rect(150, 250, 100, 50)
+    how_to_play_button_area = pygame.Rect(150, 390, 100, 50)
 
     while intro:
         for event in pygame.event.get():
@@ -23,21 +33,26 @@ def intro_screen():
                 pygame.quit()
                 quit()
 
-            # Check for mouse button down event
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
-                if 150 + 100 > mouse[0] > 150 and 250 + 50 > mouse[1] > 250:
-                    intro = False  # Start the game
 
-                    # Check for clicks on "Load Game"
-                    if load_game_button_area.collidepoint(mouse):
-                        try:
-                            loaded_data = GameState.load_game()
-                            # Now use loaded_data to set up the game state
-                            intro = False
-                        except FileNotFoundError:
-                            print("No saved game found.")
-                            # Handle the case where no saved game is available
+                # New Game button clicked
+                if new_game_button_area.collidepoint(mouse):
+                    intro = False  # Proceed to character selection
+                    loaded_data = None  # Indicate that no game data is loaded
+
+                # Load Game button clicked
+                elif load_game_button_area.collidepoint(mouse):
+                    loaded_data = GameState.load_game()
+                    if loaded_data is not None:
+                        # Successfully loaded the game data
+                        intro = False
+                    else:
+                        print("No saved game found.")
+                        # Optionally, you could display a message on the screen
+                # How to Play button clicked
+                elif how_to_play_button_area.collidepoint(mouse):
+                    how_to_play_screen()  # Call the How to Play screen
 
         # Fill the screen with a background color
         screen.fill((0, 0, 0))
@@ -48,24 +63,74 @@ def intro_screen():
         text_rect = text.get_rect(center=(screen_width // 2, screen_height // 4))
         screen.blit(text, text_rect)
 
-        # New Game Button
+        # Draw New Game, Load Game and How to play button
         mouse = pygame.mouse.get_pos()
-        if 150 + 100 > mouse[0] > 150 and 250 + 50 > mouse[1] > 250:
-            pygame.draw.rect(screen, (0, 255, 0), [150, 250, 100, 50])
-        else:
-            pygame.draw.rect(screen, (0, 200, 0), [150, 250, 100, 50])
+        pygame.draw.rect(screen, (0, 255, 0) if new_game_button_area.collidepoint(mouse) else (0, 200, 0), new_game_button_area)
+        pygame.draw.rect(screen, (200, 200, 0) if load_game_button_area.collidepoint(mouse) else (200, 200, 0), load_game_button_area)
+        pygame.draw.rect(screen, (0, 0, 255) if how_to_play_button_area.collidepoint(mouse) else (0, 0, 200), how_to_play_button_area)
 
         small_font = pygame.font.Font(None, 35)
         text_new = small_font.render("New Game", True, (255, 255, 255))
-        screen.blit(text_new, [160, 260])
-
-        # Load Game Button (placeholder for future implementation)
-        pygame.draw.rect(screen, (200, 200, 0), [150, 320, 100, 50])
         text_load = small_font.render("Load Game", True, (255, 255, 255))
-        screen.blit(text_load, [155, 330])
+        text_how_to_play = small_font.render("How to Play", True, (255, 255, 255))
+        screen.blit(text_new, (160, 260))
+        screen.blit(text_load, (155, 330))
+        screen.blit(text_how_to_play, (155, 400))
 
         pygame.display.update()
-        clock.tick(15)  # Control the loop run speed
+        clock.tick(15)
+
+    if loaded_data:
+        # If loaded_data is not None, it means the Load Game button was clicked and game data was loaded successfully
+        # Here you should use the loaded_data to set up the game state
+        # For example, update player's position, health, stats, and reconstruct the dungeon
+        # ...
+        pass
+    else:
+        # New Game was selected, proceed to character selection
+        selected_hero = character_selection_screen()
+        # Continue with game setup for a new game
+        # ...
+        pass
+def how_to_play_screen():
+    running = True
+    back_button_y_position = 350  # Adjust this value as needed
+    back_button_area = pygame.Rect(150, back_button_y_position, 100, 50)
+
+    while running:
+        mouse = pygame.mouse.get_pos()  # Move this line outside of the event loop
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if back_button_area.collidepoint(mouse):
+                    running = False  # Return to intro screen
+
+        screen.fill((0, 0, 0))
+
+        # Display the How to Play text
+        font = pygame.font.Font(None, 35)
+        instructions = [
+            "Instructions line 1",
+            "Instructions line 2",
+            "Instructions line 3",
+            # Add as many lines as needed
+        ]
+        for i, line in enumerate(instructions):
+            text = font.render(line, True, (255, 255, 255))
+            screen.blit(text, (20, 50 + 30 * i))
+
+        # Draw Back Button
+        pygame.draw.rect(screen, (255, 0, 0) if back_button_area.collidepoint(mouse) else (200, 0, 0), back_button_area)
+        text_back = font.render("Back", True, (255, 255, 255))
+        screen.blit(text_back, (160, back_button_y_position + 10))
+
+        pygame.display.update()
+        clock.tick(15)
+
 def character_selection_screen():
     selection = True
     font = pygame.font.Font(None, 50)
@@ -184,6 +249,10 @@ start_grid_pos = random.choice(list(valid_paths))  # Grid position
 # Convert grid position to pixel position for player start
 start_pixel_pos = [start_grid_pos[1] * 47, start_grid_pos[0] * 47]
 player_controller = PlayerController(start_pixel_pos, (47, 47), 2, selected_hero, dungeon_generator)
+
+# Save the initial game state
+GameState.save_game(selected_hero, player_controller, dungeon_generator)
+
 
 # Keep the window open until the user closes it
 while True:

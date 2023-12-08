@@ -9,6 +9,7 @@ class PlayerController:
         self.speed = speed
         self.heroes_model = heroes_model #refers to heroes model
         self.dungeon_generator = dungeon_generator
+        self.god_mode = False
 
     # Moves the player in given direction
     def move(self, direction):
@@ -38,6 +39,17 @@ class PlayerController:
 
     # Updates the player position based of the key state
     def update(self, key_state):
+        # First, handle the God Mode toggle
+        if key_state[pygame.K_g]:
+            if not self.key_held:  # Check if key is not already held down
+                self.god_mode = not self.god_mode
+                print("God Mode is now", "ON" if self.god_mode else "OFF")
+                self.key_held = True  # Mark key as held to prevent continuous toggling
+            return  # Skip the rest of the update if toggling God Mode
+        elif not any(key_state[key] for key in [pygame.K_UP, pygame.K_w, pygame.K_DOWN, pygame.K_s, pygame.K_LEFT, pygame.K_a, pygame.K_RIGHT, pygame.K_d]):
+            self.key_held = False  # Reset key_held if no relevant keys are pressed
+
+        # Then, handle movement
         if key_state[pygame.K_UP] or key_state[pygame.K_w]:
             if not self.key_held:
                 self.move("UP")
@@ -54,8 +66,6 @@ class PlayerController:
             if not self.key_held:
                 self.move("RIGHT")
                 self.key_held = True
-        else:
-            self.key_held = False
 
     # Sets the new speed for the player (CAN BE USED FOR BUFFS/DEBUFFS)
     def set_speed(self, new_speed):  # We can use to update speed for boost

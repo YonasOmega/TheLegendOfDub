@@ -16,7 +16,17 @@ class Hero(DungeonCharacter):
         return random.random() < self.chance_to_block
 
     def receive_damage(self, damage):
-        pass
+        if self.player_controller.god_mode:  # Check if God Mode is active
+            print("God Mode active: No damage received.")
+            return
+
+        # Normal damage processing
+        if not self.block_attack():
+            self.health -= damage
+            print(f"Received damage: {damage}. Current health: {self.health}")
+        else:
+            print("Blocked the attack!")
+        # pass
         # if blockattack true, no damage, otherwise get damage
         # apply to monsters as well
 
