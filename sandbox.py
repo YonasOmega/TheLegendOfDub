@@ -12,3 +12,4 @@ print("Monster X Position:", mons.get_x_position())
 print(mons.position)
 if mons.get_y_position() == hero.get_y_position() or mons.get_x_position() == hero.get_x_position():
     print(mons.perform_attack(hero))
+print(hero.get_health())

@@ -11,9 +11,9 @@ class Warrior(Hero):
         if random.random() < 0.4:  # 40% chance of success
             damage = random.randint(75, 175)
             opponent.receive_damage(damage)
-            return f"{self._name} used Crushing Blow on {opponent.name} for {damage} damage."
+            return f"{self._name} used Crushing Blow on {opponent._name} for {damage} damage."
         else:
-            return f"{self._name} attempted Crushing Blow on {opponent.name} but missed."
+            return f"{self._name} attempted Crushing Blow on {opponent._name} but missed."
 
     # Optionally, you can override the attack method if the Warrior's attack behavior is different.
     # def attack(self, opponent):

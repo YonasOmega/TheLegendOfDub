@@ -12,10 +12,10 @@ class Skeleton(Monster):
         if self.can_attack():
             damage = random.randint(self._min_damage, self._max_damage)
             opponent.receive_damage(damage)
-            print(f"{self._name} attacked {opponent.name} for {damage} damage.")
+            print(f"{self._name} attacked {opponent._name} for {damage} damage.")
             self.heal()
         else:
-            print(f"{self._name} missed the attack on {opponent.name}.")
+            print(f"{self._name} missed the attack on {opponent._name}.")
 
     # @staticmethod
     # def fetch_skeleton_data():
@@ -31,7 +31,7 @@ class Skeleton(Monster):
     def fetch_skeleton_data():
         try:
             #connection = sqlite3.connect("../../db/monsters.db")
-            connection = sqlite3.connect("/Users/billy/2023-2024/Fall/360/LegendOfDub/Model/db/monsters.db")
+            connection = sqlite3.connect("/Users/billy/2023-2024/Fall/360/TheLegendOfDub/Model/db/monsters.db")
         except sqlite3.OperationalError as e:
             print(f"Error opening database: {e}")
             return None
