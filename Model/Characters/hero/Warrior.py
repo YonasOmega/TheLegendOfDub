@@ -14,8 +14,3 @@ class Warrior(Hero):
             print(f"{self._name} used Crushing Blow on {opponent._name} for {damage} damage.")
         else:
             print(f"{self._name} attempted Crushing Blow on {opponent._name} but missed.")
-
-    # Optionally, you can override the attack method if the Warrior's attack behavior is different.
-    # def attack(self, opponent):
-    #     # Custom implementation for Warrior's attack if needed
-    #     pass

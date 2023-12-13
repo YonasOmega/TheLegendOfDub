@@ -50,5 +50,5 @@ class Dungeon:
 #     print(specific_room.stat())  # Access Room's stat method
 #
 # print(f"\nplayer location: {dungeon.player_location}")
-dungeon = Dungeon(10, 10)
+#dungeon = Dungeon(10, 10)
 

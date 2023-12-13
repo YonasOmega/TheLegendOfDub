@@ -45,8 +45,3 @@ class Thief(Hero):
             damage = random.randint(self._min_damage, self._max_damage)
             opponent.receive_damage(damage)
             print(f"{self._name} couldn't get a surprise attack, defaulted to a normal attack on {opponent._name} for {damage} damage.")
-
-    # Optionally, you can override the attack method if the Thief's attack behavior is different.
-    # def attack(self, opponent):
-    #     # Custom implementation for Thief's attack if needed
-    #     pass

@@ -15,9 +15,3 @@ class Priestess(Hero):
 
     def receive_healing(self, amount):
         self._health += amount
-
-    # def attack(self, opponent):
-
-# Example usage:
-# priestess = Priestess("PriestessName")
-

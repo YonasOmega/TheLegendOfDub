@@ -11,17 +11,3 @@ class Health_Potion(Item):
 
     def effect(self, hero: Hero):
         return hero.set_health(random.randint(5, 15))
-
-
-# hp = Health_Potion()
-# print(hp)
-
-# priest = Priestess("Bob")
-# print(priest)
-#
-# priest.receive_damage(20)
-# print(priest)
-#
-# hp.effect(priest)
-# print(priest)
-
