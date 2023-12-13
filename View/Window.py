@@ -328,7 +328,7 @@ pygame.display.update()
 pygame.display.set_caption("LegendOfDub")
 
 # Create a DungeonGenerator instance
-dungeon = Dungeon(10, 10)
+dungeon = Dungeon(6, 6)
 # dungeon_generator = DungeonGenerator(10, 10)  # Set appropriate dimensions
 
 
