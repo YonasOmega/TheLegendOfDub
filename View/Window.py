@@ -7,16 +7,18 @@ from Model.DungeonGenerator import DungeonGenerator
 from Model.Characters.hero.Warrior import Warrior
 from Model.Characters.hero.Thief import Thief
 from Model.Characters.hero.Priestess import Priestess
+from Model.Characters.hero.Heroes import Hero
+from Model.Characters import Combat_Encounter
+from Model.rooms.Room import Room
+from Model.Dungeon import Dungeon
 from View import GameState
 import os
 from pathlib import Path
 from View.GameState import GameState
 
-
 # Initialize Pygame
 pygame.init()
 pygame.mixer.init()
-
 
 
 # Load background music
@@ -26,8 +28,11 @@ def load_music():
     music_path = os.path.join(script_directory, "..", "Assets", "Musics", "1 - Adventure Begin.ogg")
 
     pygame.mixer.music.load(music_path)
+
+
 load_music()
-pygame.mixer.music.play(-1)   # Play the music indefinitely
+pygame.mixer.music.play(-1)  # Play the music indefinitely
+
 
 # Function for the introduction screen
 def intro_screen():
@@ -76,9 +81,12 @@ def intro_screen():
 
         # Draw New Game, Load Game and How to play button
         mouse = pygame.mouse.get_pos()
-        pygame.draw.rect(screen, (0, 255, 0) if new_game_button_area.collidepoint(mouse) else (0, 200, 0), new_game_button_area)
-        pygame.draw.rect(screen, (200, 200, 0) if load_game_button_area.collidepoint(mouse) else (200, 200, 0), load_game_button_area)
-        pygame.draw.rect(screen, (0, 0, 255) if how_to_play_button_area.collidepoint(mouse) else (0, 0, 200), how_to_play_button_area)
+        pygame.draw.rect(screen, (0, 255, 0) if new_game_button_area.collidepoint(mouse) else (0, 200, 0),
+                         new_game_button_area)
+        pygame.draw.rect(screen, (200, 200, 0) if load_game_button_area.collidepoint(mouse) else (200, 200, 0),
+                         load_game_button_area)
+        pygame.draw.rect(screen, (0, 0, 255) if how_to_play_button_area.collidepoint(mouse) else (0, 0, 200),
+                         how_to_play_button_area)
 
         small_font = pygame.font.Font(None, 35)
         text_new = small_font.render("New Game", True, (255, 255, 255))
@@ -103,6 +111,8 @@ def intro_screen():
         # Continue with game setup for a new game
         # ...
         pass
+
+
 # Function for the "How to Play" screen
 def how_to_play_screen():
     running = True
@@ -145,6 +155,8 @@ def how_to_play_screen():
 
         pygame.display.update()
         clock.tick(15)
+
+
 # Function to load hero assets based on hero type
 def load_hero_assets(hero_type):
     assets = {}
@@ -182,6 +194,7 @@ def load_hero_assets(hero_type):
 
     return assets
 
+
 # Function for the character selection screen
 def character_selection_screen():
     selection = True
@@ -204,11 +217,11 @@ def character_selection_screen():
                 # Check for clicks on each hero's button
                 if start_x <= mouse[0] <= start_x + button_width:
                     if start_y <= mouse[1] <= start_y + button_height:
-                        return Warrior("WarriorName")
+                        return Warrior("Warrior")
                     elif start_y + button_height + 10 <= mouse[1] <= start_y + 2 * button_height + 10:
-                        return Thief("ThiefName")
+                        return Thief("Thief")
                     elif start_y + 2 * (button_height + 10) <= mouse[1] <= start_y + 3 * button_height + 20:
-                        return Priestess("PriestessName")
+                        return Priestess("Priestess")
 
         # Get the current mouse position
         mouse = pygame.mouse.get_pos()
@@ -217,14 +230,19 @@ def character_selection_screen():
         screen.fill((0, 0, 0))
 
         # Check if the mouse is hovering over a button and change color
-        warrior_color = (0, 255, 0) if start_x <= mouse[0] <= start_x + button_width and start_y <= mouse[1] <= start_y + button_height else (0, 200, 0)
-        thief_color = (255, 0, 0) if start_x <= mouse[0] <= start_x + button_width and start_y + button_height + 10 <= mouse[1] <= start_y + 2 * button_height + 10 else (200, 0, 0)
-        priestess_color = (0, 0, 255) if start_x <= mouse[0] <= start_x + button_width and start_y + 2 * (button_height + 10) <= mouse[1] <= start_y + 3 * button_height + 20 else (0, 0, 200)
+        warrior_color = (0, 255, 0) if start_x <= mouse[0] <= start_x + button_width and start_y <= mouse[
+            1] <= start_y + button_height else (0, 200, 0)
+        thief_color = (255, 0, 0) if start_x <= mouse[0] <= start_x + button_width and start_y + button_height + 10 <= \
+                                     mouse[1] <= start_y + 2 * button_height + 10 else (200, 0, 0)
+        priestess_color = (0, 0, 255) if start_x <= mouse[0] <= start_x + button_width and start_y + 2 * (
+                    button_height + 10) <= mouse[1] <= start_y + 3 * button_height + 20 else (0, 0, 200)
 
         # Draw buttons with the appropriate color based on hover state
         pygame.draw.rect(screen, warrior_color, [start_x, start_y, button_width, button_height])  # Warrior
-        pygame.draw.rect(screen, thief_color, [start_x, start_y + button_height + 10, button_width, button_height])  # Thief
-        pygame.draw.rect(screen, priestess_color, [start_x, start_y + 2 * (button_height + 10), button_width, button_height])  # Priestess
+        pygame.draw.rect(screen, thief_color,
+                         [start_x, start_y + button_height + 10, button_width, button_height])  # Thief
+        pygame.draw.rect(screen, priestess_color,
+                         [start_x, start_y + 2 * (button_height + 10), button_width, button_height])  # Priestess
 
         # Text for each hero type
         warrior_text = font.render("Warrior", True, (255, 255, 255))
@@ -239,10 +257,52 @@ def character_selection_screen():
         clock.tick(15)  # Control the loop run speed
 
 
+def game_loop(dungeon: Dungeon, player: Hero):
+    print("Game loop is happening")
+    room = dungeon.get_room(player.position[0], player.position[1])
+
+    if room.exit:
+        # Define the set of required pillars
+        required_pillars = {"Polymorphism", "Abstraction", "Encapsulation", "Inheritance"}
+
+        # Check if each required pillar is in the player's bag
+        has_all_pillars = all(pillar in (str(item) for item in player.bag_object()) for pillar in required_pillars)
+
+        if has_all_pillars:
+            return "won"
+        else:
+            print("There are more pillars to be found")
+
+    if room.pillar:
+        print(f"{room.pillar} found!")
+        player.put_in_bag(room.pillar)
+        room.discard_pillar()
+
+    if room.potion:
+        print(f"{room.potion} found!")
+        player.put_in_bag(room.potion)
+        room.dicard_potioon()
+
+    if room.pit:
+        print(f"You fell into a pit. You took {room.pit} damage")
+        player.receive_damage(room.pit)
+
+    if room.monster:
+        print(f"You have encountered a {room.monster}")
+        print(player)
+        print(room.monster)
+        Combat_Encounter.start_combat(player, room.monster)
+        room.monster_defeated()
+
+    elif not player.is_alive():
+        return "lost"
+
+    return "continue"
+
+
 # Set the window size
 screen_width = 470
 screen_height = 470
-
 
 # Load images
 path_image = pygame.image.load("../Assets/brown.png")
@@ -263,54 +323,57 @@ screen.fill((0, 0, 0))
 # Update the display
 pygame.display.update()
 
-#have a name for our game
+# have a name for our game
 pygame.display.set_caption("LegendOfDub")
 
 # Create a DungeonGenerator instance
-dungeon_generator = DungeonGenerator(10, 10)  # Set appropriate dimensions
+dungeon = Dungeon(10, 10)
+# dungeon_generator = DungeonGenerator(10, 10)  # Set appropriate dimensions
 
 
-#dungeon_generator.generate()
-print(dungeon_generator)
+# dungeon_generator.generate()
 
 # Map the characters to their corresponding images
 element_images = {
-     'X': entrance_image,
-     'Y': exit_image,
+    'X': entrance_image,
+    'Y': exit_image,
     #
-     'A': abstraction_image,
-     'E': encapsulation_image,
-     'I': inheritance_image,
-     'P': polymorphism_image,
+    'A': abstraction_image,
+    'E': encapsulation_image,
+    'I': inheritance_image,
+    'P': polymorphism_image,
     '1': path_image,
     '0': block_background,
 }
 
-#Have a clock so we can so it to 60fps
+# Have a clock so we can so it to 60fps
 clock = pygame.time.Clock()
 
-#Intro Screen
+# Intro Screen
 intro_screen()
 
-#Character Selection Screen
+# Character Selection Screen
 selected_hero = character_selection_screen()
 
-valid_paths = dungeon_generator.get_Path_Pos()
-start_grid_pos = random.choice(list(valid_paths))  # Grid position
+valid_paths = dungeon.maze.get_Path_Pos()
+
+# start_grid_pos = random.choice(list(valid_paths))  # Grid position
+selected_hero.position = dungeon.player_location
+start_grid_pos = selected_hero.position
 
 hero_type = selected_hero.__class__.__name__
 hero_assets = load_hero_assets(hero_type)
 
 # Convert grid position to pixel position for player start
 start_pixel_pos = [start_grid_pos[1] * 47, start_grid_pos[0] * 47]
-player_controller = PlayerController(start_pixel_pos, (47, 47), 2, selected_hero, dungeon_generator, hero_assets)
+player_controller = PlayerController(start_pixel_pos, (47, 47), 2, selected_hero, dungeon.maze, hero_assets, selected_hero)
 
 # Save the initial game state
-GameState.save_game(selected_hero, player_controller, dungeon_generator)
-
+GameState.save_game(selected_hero, player_controller, dungeon.maze)
 
 # Keep the window open until the user closes it
-while True:
+game_status = "continue"
+while game_status == "continue":
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -322,31 +385,43 @@ while True:
     # Update the player controller
     player_controller.update(key_state)
 
-
-    #Update the display
+    # Update the display
     screen.fill((0, 0, 0))
 
     # Get the path positions from the DungeonGenerator
-    path_positions = dungeon_generator.get_Path_Pos()
+    path_positions = dungeon.maze.get_Path_Pos()
+    pillar_position = dungeon.maze.get_Pill_Pos()
 
     # Draw the dungeon elements on the screen
-    for row_index, row in enumerate(dungeon_generator.get_maze()):
+    for row_index, row in enumerate(dungeon.maze.get_maze()):
         for col_index, element in enumerate(row):
             position = (row_index, col_index)
-            if position in path_positions:
-                # Draw a red rectangle for path positions
-                pygame.draw.rect(screen, (255, 0, 0), (col_index * 47, row_index * 47, 47, 47))
-            elif element in element_images:
-                # Draw the element image for non-path positions
-                screen.blit(element_images[element], (col_index * 47, row_index * 47))
+            # if position in path_positions:
+            #     # Draw a red rectangle for path positions
+            #     pygame.draw.rect(screen, (255, 0, 0), (col_index * 47, row_index * 47, 47, 47))
+            # elif element in element_images:
+            #     # Draw the element image for non-path positions
+            #     screen.blit(element_images[element], (col_index * 47, row_index * 47))
+            screen.blit(element_images[element], (col_index * 47, row_index * 47))
 
     player_controller.update_animation()  # Update animation frame
     # Draw the player at the updated position
     player_pos = player_controller.get_position()
-    #pygame.draw.rect(screen, (0, 255, 0), (*player_pos, *player_controller.size))
+    temp_pos = player_controller.get_grid_position()
+    selected_hero.position = temp_pos
+    print(f"True hero position:  {selected_hero.position}")
+    # pygame.draw.rect(screen, (0, 255, 0), (*player_pos, *player_controller.size))
     current_sprites = player_controller.assets[player_controller.current_direction]
     current_sprite = current_sprites[player_controller.current_frame]
     screen.blit(current_sprite, player_pos)
 
     pygame.display.update()
-    clock.tick(60)  # shouldn't run more than 60 ticks
+    game_status = game_loop(dungeon, selected_hero)
+    clock.tick(30)  # shouldn't run more than 60 ticks
+
+if game_status == "won":
+    print("Congratulations! You have won the game!")
+elif game_status == "lost":
+    print("You have lost the game. Better luck next time!")
+
+print(dungeon.maze)

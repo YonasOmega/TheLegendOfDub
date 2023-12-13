@@ -1,6 +1,7 @@
 from abc import abstractmethod
 import random
 from Model.Characters.DungeonCharacter import DungeonCharacter
+from Controller.Controller import PlayerController
 
 
 class Hero(DungeonCharacter):
@@ -20,6 +21,7 @@ class Hero(DungeonCharacter):
         # if self.player_controller.god_mode is not None:  # Check if God Mode is active
         #     if(self.player_controller.god_mode):
         #         print("God Mode active: No damage received.")
+        #         super().god_mode()
         #         return
 
         # Normal damage processing
@@ -40,9 +42,12 @@ class Hero(DungeonCharacter):
         if not (0 <= new_position[0] < dungeon_width and 0 <= new_position[1] < dungeon_height):
             return False
 
-        # Check if the new position is a valid path
+        # Check if the new position is a valid path or a pillar position
         valid_paths = dungeon_generator.get_Path_Pos()
-        return tuple(new_position) in valid_paths
+        pillar_pos = dungeon_generator.get_Pill_Pos()
+
+        # Check if new position is in valid paths or is a pillar position
+        return tuple(new_position) in valid_paths or tuple(new_position) in pillar_pos
 
     def attack(self, opponent):
         attack_count = self.calculate_attack_count(opponent)
@@ -105,5 +110,11 @@ class Hero(DungeonCharacter):
                 self.use_item(choice)
         except ValueError:
             print("Invalid input. Please enter a number.")
+
+    def __str__(self):
+        return super().__str__() + " " + self.bag
+
+    def bag_object(self):
+        return self.__bag
 
 

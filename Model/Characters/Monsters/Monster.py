@@ -51,7 +51,7 @@ class Gremlin(Monster):
 
     @staticmethod
     def fetch_gremlin_data():
-        db_path = os.path.join(os.getcwd(), "Model", "db", "monsters.db")
+        db_path = os.path.join(os.path.dirname(os.getcwd()), "Model", "db", "monsters.db")
         try:
             connection = sqlite3.connect(db_path)
         except sqlite3.OperationalError as e:
@@ -78,7 +78,7 @@ class Skeleton(Monster):
 
     @staticmethod
     def fetch_skeleton_data():
-        db_path = os.path.join(os.getcwd(), "Model", "db", "monsters.db")
+        db_path = os.path.join(os.path.dirname(os.getcwd()), "Model", "db", "monsters.db")
         try:
             connection = sqlite3.connect(db_path)
         except sqlite3.OperationalError as e:
@@ -105,7 +105,7 @@ class Ogre(Monster):
 
     @staticmethod
     def fetch_ogre_data():
-        db_path = os.path.join(os.getcwd(), "Model", "db", "monsters.db")
+        db_path = os.path.join(os.path.dirname(os.getcwd()), "Model", "db", "monsters.db")
         try:
             connection = sqlite3.connect(db_path)
         except sqlite3.OperationalError as e:

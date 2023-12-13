@@ -36,17 +36,19 @@ class Dungeon:
     def player_location(self):
         return self.__player
 
-    def get_maze_raw(self):
+    @property
+    def maze(self):
         return self.__dungeon
 
 
 # Usage
-dungeon = Dungeon(7, 7)
-
-print(dungeon.get_maze_raw())
-specific_room = dungeon.get_room(5, 5)  # Get room at col 5, row 5
-if specific_room:
-    print(specific_room.stat())  # Access Room's stat method
-
-print(f"\nplayer location: {dungeon.player_location}")
+# dungeon = Dungeon(7, 7)
+#
+# print(dungeon.get_maze_raw())
+# specific_room = dungeon.get_room(5, 5)  # Get room at col 5, row 5
+# if specific_room:
+#     print(specific_room.stat())  # Access Room's stat method
+#
+# print(f"\nplayer location: {dungeon.player_location}")
+dungeon = Dungeon(10, 10)
 

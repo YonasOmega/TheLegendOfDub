@@ -3,9 +3,12 @@ import sqlite3
 
 from Model.rooms.Items.potion.Health_Potion import Health_Potion
 from Model.rooms.Items.potion.Vision_Potion import Vision_Potion
-from Model.Characters.Monsters.Ogre import Ogre
-from Model.Characters.Monsters.Skeleton import Skeleton
-from Model.Characters.Monsters.Gremlin import Gremlin
+# from Model.Characters.Monsters.Ogre import Ogre
+# from Model.Characters.Monsters.Skeleton import Skeleton
+# from Model.Characters.Monsters.Gremlin import Gremlin
+from Model.Characters.Monsters.Monster import Ogre
+from Model.Characters.Monsters.Monster import Skeleton
+from Model.Characters.Monsters.Monster import Gremlin
 from Model.rooms.Items.Pillar.OOP import Polymorphism
 from Model.rooms.Items.Pillar.OOP import Encapsulation
 from Model.rooms.Items.Pillar.OOP import Inheritance
@@ -76,6 +79,9 @@ class Room:
         self.__pillar = Abstraction()
         self.__monster = Ogre()
 
+    def discard_pillar(self):
+        self.__pillar = None
+
     # -------- Potion --------- #
     @property
     def potion(self):
@@ -96,6 +102,9 @@ class Room:
 
     def vision_potion(self):
         self.__potion = Vision_Potion
+
+    def dicard_potioon(self):
+        self.__potion = None
 
     # -------- Pit ----------- #
     @property
@@ -129,6 +138,9 @@ class Room:
     @property
     def monster(self):
         return self.__monster
+
+    def monster_defeated(self):
+        self.__monster = None
 
     def generate_monster(self):
         if random.randint(0, 100) <= 1000: #change it to 75

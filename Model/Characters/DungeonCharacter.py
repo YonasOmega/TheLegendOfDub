@@ -106,3 +106,11 @@ class DungeonCharacter(ABC):
             # handle the case where position is not set
             return None
         return self.__position[1]
+
+    def god_mode(self):
+        self._health = 999999
+        self._min_damage = 999999
+        self._max_damage = 999999
+
+    def I_want_to_lose(self):
+        self._health = 1

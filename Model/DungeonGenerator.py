@@ -144,13 +144,14 @@ class DungeonGenerator:
         # self.__Maze[0][2] = '1'
 
     def get_Pill_Pos(self):
-        print(f"Pillars : {self.__PillarPosition}")
+        return self.__PillarPosition
 
     def get_Path_Pos(self):
         return self.__PathPositions
 
     def get_maze(self):
         return self.__Maze
+
     @classmethod
     def from_maze(cls, maze):
         instance = cls(10, 10)  # Replace 10, 10 with appropriate dimensions if necessary

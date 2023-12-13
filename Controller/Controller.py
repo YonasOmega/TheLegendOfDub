@@ -13,17 +13,19 @@ class PlayerController:
     - dungeon_generator: Reference to the dungeon generator.
     - assets: Dictionary containing player animation assets for different directions.
     """
-    def __init__(self, start_pos, size, speed, heroes_model, dungeon_generator, assets):
+
+    def __init__(self, start_pos, size, speed, heroes_model, dungeon_generator, assets, player):
         self.position = start_pos
         self.size = size
         self.speed = speed
-        self.heroes_model = heroes_model #refers to heroes model
+        self.heroes_model = heroes_model  # refers to heroes model
         self.dungeon_generator = dungeon_generator
         self.god_mode = False
         self.assets = assets
         self.current_direction = "down"
         self.current_frame = 0
         self.frame_counter = 0
+        self.__player = player
 
     """
     Moves the player in the specified direction.
@@ -31,6 +33,7 @@ class PlayerController:
     Parameters:
     - direction: The direction in which the player should move ('UP', 'DOWN', 'LEFT', 'RIGHT').
     """
+
     def move(self, direction):
         new_position = self.position.copy()
         move_x = 47  # Horizontal movement increment (width of one cell)
@@ -53,21 +56,33 @@ class PlayerController:
             self.position = new_position
         print("Trying to move to:", new_position, " Grid position:", grid_position)
 
-
     # Gets the current position of the player
     def get_position(self):
         return self.position
+
+    def get_grid_position(self):
+        grid_position = (self.position[1] // 47, self.position[0] // 47)
+        return grid_position
 
     # Updates the player position based of the key state
     def update(self, key_state):
         # First, handle the God Mode toggle
         if key_state[pygame.K_g]:
             if not self.key_held:  # Check if key is not already held down
-                self.god_mode = not self.god_mode
-                print("God Mode is now", "ON" if self.god_mode else "OFF")
+                #self.god_mode = not self.god_mode
+                self.__player.god_mode()
+                print("God Mode is now", "ON")
                 self.key_held = True  # Mark key as held to prevent continuous toggling
             return  # Skip the rest of the update if toggling God Mode
-        elif not any(key_state[key] for key in [pygame.K_UP, pygame.K_w, pygame.K_DOWN, pygame.K_s, pygame.K_LEFT, pygame.K_a, pygame.K_RIGHT, pygame.K_d]):
+        elif key_state[pygame.K_i]:
+            if not self.key_held:  # Check if key is not already held down
+                #self.god_mode = not self.god_mode
+                self.__player.I_want_to_lose()
+                print("lose Mode is now", "ON")
+                self.key_held = True  # Mark key as held to prevent continuous toggling
+        elif not any(key_state[key] for key in
+                     [pygame.K_UP, pygame.K_w, pygame.K_DOWN, pygame.K_s, pygame.K_LEFT, pygame.K_a, pygame.K_RIGHT,
+                      pygame.K_d]):
             self.key_held = False  # Reset key_held if no relevant keys are pressed
 
         # Then, handle movement
@@ -94,6 +109,7 @@ class PlayerController:
            Parameters:
            - key_state: Dictionary representing the state of keys (True if pressed, False otherwise).
            """
+
     def update_animation(self):
         self.frame_counter += 1
         if self.frame_counter >= 60:  # FRAME_DELAY controls the speed of the animation
@@ -111,5 +127,14 @@ class PlayerController:
         Parameters:
         - new_speed: The new speed value.
         """
+
     def set_speed(self, new_speed):  # We can use to update speed for boost
         self.speed = new_speed
+
+    @property
+    def god_mode(self):
+        return self.god_mode
+
+    @god_mode.setter
+    def god_mode(self, value):
+        self._god_mode = value
