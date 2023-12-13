@@ -8,12 +8,12 @@ class Warrior(Hero):
 
     def special_skill(self, opponent):
         # Implement the Crushing Blow special skill
-        if random.random() < 0.4:  # 40% chance of success
+        if random.random() <= 0.4:  # 40% chance of success
             damage = random.randint(75, 175)
             opponent.receive_damage(damage)
-            return f"{self._name} used Crushing Blow on {opponent._name} for {damage} damage."
+            print(f"{self._name} used Crushing Blow on {opponent._name} for {damage} damage.")
         else:
-            return f"{self._name} attempted Crushing Blow on {opponent._name} but missed."
+            print(f"{self._name} attempted Crushing Blow on {opponent._name} but missed.")
 
     # Optionally, you can override the attack method if the Warrior's attack behavior is different.
     # def attack(self, opponent):

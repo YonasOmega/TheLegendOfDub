@@ -8,14 +8,14 @@ class Skeleton(Monster):
         name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal = skeleton_data
         super().__init__(name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal)
 
-    def attack(self, opponent):
-        if self.can_attack():
-            damage = random.randint(self._min_damage, self._max_damage)
-            opponent.receive_damage(damage)
-            print(f"{self._name} attacked {opponent._name} for {damage} damage.")
-            self.heal()
-        else:
-            print(f"{self._name} missed the attack on {opponent._name}.")
+    # def attack(self, opponent):
+    #     if self.can_attack():
+    #         damage = random.randint(self._min_damage, self._max_damage)
+    #         opponent.receive_damage(damage)
+    #         print(f"{self._name} attacked {opponent._name} for {damage} damage.")
+    #         self.heal()
+    #     else:
+    #         print(f"{self._name} missed the attack on {opponent._name}.")
 
     # @staticmethod
     # def fetch_skeleton_data():

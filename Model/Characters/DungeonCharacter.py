@@ -1,5 +1,6 @@
 from abc import ABC
 import random
+from Controller.Controller import PlayerController
 
 
 class DungeonCharacter(ABC):
@@ -24,22 +25,23 @@ class DungeonCharacter(ABC):
     def calculate_damage(self):
         return random.randint(self._min_damage, self._max_damage)
 
-    def perform_attack(self, opponent):
-        attack_count = self.calculate_attack_count(opponent)
-
-        damage_total = 0  # in case of tracking the total damage the character cause in 1 turn
-        attack_messages = []
-
-        for _ in range(attack_count):
-            if self.can_attack():
-                damage = self.calculate_damage()
-                opponent.receive_damage(damage)
-                damage_total += damage
-                attack_messages.append(f"{self._name} successfully attacked {opponent.get_name()} for {damage} damage.")
-            else:
-                attack_messages.append(f"{self._name} missed the attack on {opponent.get_name()}.")
-
-        return attack_messages, damage_total
+    def attack(self, opponent):
+        # attack_count = self.calculate_attack_count(opponent)
+        #
+        # damage_total = 0  # in case of tracking the total damage the character cause in 1 turn
+        # attack_messages = []
+        #
+        # for _ in range(attack_count):
+        #     if self.can_attack():
+        #         damage = self.calculate_damage()
+        #         opponent.receive_damage(damage)
+        #         damage_total += damage
+        #         attack_messages.append(f"{self._name} successfully attacked {opponent.get_name()} for {damage} damage.")
+        #     else:
+        #         attack_messages.append(f"{self._name} missed the attack on {opponent.get_name()}.")
+        #
+        # return attack_messages, damage_total
+        pass
 
     def calculate_attack_count(self, opponent):
         # Calculate the number of attacks based on attack speed ratio

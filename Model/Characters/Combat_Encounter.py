@@ -3,53 +3,69 @@ from Model.Characters.Monsters.Skeleton import Skeleton
 from Model.Characters.DungeonCharacter import DungeonCharacter
 from Model.Characters.hero.Heroes import Hero
 from Model.Characters.Monsters import Monster
+from Model.Characters.hero.Priestess import Priestess
+from Model.Characters.hero.Thief import Thief
 
 
-class CombatEncounter:
-    def __init__(self, player: Hero, monster: Monster):
-        self.player = player
-        self.monster = monster
+def calculate_turns(attacker_speed, defender_speed):
+    return max(1, int(attacker_speed / defender_speed))
 
-    def calculate_turns(self, attacker_speed, defender_speed):
-        return max(1, int(attacker_speed / defender_speed))
 
-    def player_choice(self):
-        choice = input("Choose your attack: (1) Normal Attack, (2) Special Attack: ")
-        return choice.strip()
+def player_choice():
+    choice = input("Choose your attack: (1) Normal Attack, (2) Special Attack: ")
+    return choice.strip()
 
-    def start_combat(self):
-        player_turns = self.calculate_turns(self.player.get_attack_speed(), self.monster.get_attack_speed())
-        monster_turns = self.calculate_turns(self.monster.get_attack_speed(), self.player.get_attack_speed())
 
-        while self.player.get_health() > 0 and self.monster.get_health() > 0:
-            # Player's turn(s)
-            for _ in range(player_turns):
-                if self.monster.get_health() <= 0:
-                    break
-                attack_choice = self.player_choice()
-                if attack_choice == "1":
-                    self.player.perform_attack(self.monster)
-                elif attack_choice == "2":
-                    self.player.special_skill(self.monster)
-                else:
-                    print("Invalid choice, defaulting to normal attack.")
-                    self.player.perform_attack(self.monster)
+def start_combat(player, monster):
+    player_turns = calculate_turns(player.get_attack_speed(), monster.get_attack_speed())
+    monster_turns = calculate_turns(monster.get_attack_speed(), player.get_attack_speed())
 
-            # Monster's turn(s)
-            for _ in range(monster_turns):
-                if self.player.get_health() <= 0:
-                    break
-                self.monster.attack(self.player)
+    while player.get_health() > 0 and monster.get_health() > 0:
+        # Player's turn(s)
+        for _ in range(player_turns):
+            if monster.get_health() <= 0 or player.get_health() <= 0:
+                break
+            attack_choice = player_choice()
+            if attack_choice == "1":
+                player.attack(monster)
+            elif attack_choice == "2":
+                player.special_skill(monster)
+            else:
+                print("Invalid choice, defaulting to normal attack.")
+                player.attack(monster)
 
-            print(f"Player health: {self.player.get_health()}")
-            print(f"Monster Health: {self.monster.get_health()}")
+        # Monster's turn(s)
+        for _ in range(monster_turns):
+            if player.get_health() <= 0 or monster.get_health() <= 0:
+                break
+            monster.attack(player)
 
-        return "Player" if self.monster.get_health() <= 0 else "Monster"
+        print(f"Player health: {player.get_health()}")
+        print(f"Monster Health: {monster.get_health()}")
+
+    return "Player" if monster.get_health() <= 0 else "Monster"
+
+
+def thief_skill(player, monster):
+    # Player's turn(s)
+    for _ in range(1):
+        if monster.get_health() <= 0 or player.get_health() <= 0:
+            break
+        attack_choice = player_choice()
+        if attack_choice == "1":
+            player.attack(monster)
+        elif attack_choice == "2":
+            player.special_skill(monster)
+        else:
+            print("Invalid choice, defaulting to normal attack.")
+            player.attack(monster)
+
+        print(f"Player health: {player.get_health()}")
+        print(f"Monster Health: {monster.get_health()}")
 
 
 # Example usage
-player = Warrior("warrior")
+player = Warrior("Thief")
 monster = Skeleton()
-combat = CombatEncounter(player, monster)
-winner = combat.start_combat()
+winner = start_combat(player, monster)
 print(f"The winner is {winner}")

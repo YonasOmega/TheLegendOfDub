@@ -29,3 +29,12 @@ class Monster(DungeonCharacter, ABC):
             heal_amount = random.randint(15, 30)  # Adjust the healing range as needed
             self._health += heal_amount
             print(f"{self._name} healed itself for {heal_amount} hit points.")
+
+    def attack(self, opponent):
+        if self.can_attack():
+            damage = random.randint(self._min_damage, self._max_damage)
+            print(f"{self._name} attacked {opponent._name} for {damage} damage.")
+            opponent.receive_damage(damage)
+            self.heal()
+        else:
+            print(f"{self._name} missed the attack on {opponent._name}.")
