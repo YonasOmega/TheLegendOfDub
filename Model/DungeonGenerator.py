@@ -12,10 +12,10 @@ import random
 """
 
 """
-        Column0 | Column1 | Column2
-row0    x[0][0] | x[0][1] | x[0][2]
-row1    x[1][0] | x[1][1] | x[1][2]
-row2    x[2][0] | x[2][1] | x[2][2]
+        Row0 | ROw1 | Row2
+Col0    x[0][0] | x[0][1] | x[0][2]
+Col1    x[1][0] | x[1][1] | x[1][2]
+Col2    x[2][0] | x[2][1] | x[2][2]
 """
 
 
@@ -48,15 +48,13 @@ class DungeonGenerator:
         self.generate()
 
     def random_position(self):
-        return random.randint(0, self.__Row - 1), random.randint(0, self.__Col - 1)
+        return random.randint(0, self.__Col - 1), random.randint(0, self.__Row - 1)
 
     def generate(self):
         self.generate_maze()
         self.generate_entrance_exit()
         self.generate_pillars()
         self.pillar_to_path()
-
-
 
     def __str__(self):
         # Convert each row of the maze to a string and then join all rows
@@ -78,14 +76,15 @@ class DungeonGenerator:
         while not spaced_entrance_and_exit(entrance, exit):
             exit = self.random_position()
 
-        self.__Maze[entrance.__getitem__(0)][entrance.__getitem__(1)] = 'X'
+        # self.__Maze[entrance.__getitem__(0)][entrance.__getitem__(1)] = 'X'
+        self.__Maze[entrance[0]][entrance[1]] = 'X'
         self.__Maze[exit.__getitem__(0)][exit.__getitem__(1)] = 'Y'
         self.__PathPositions.add(entrance)
         self.__PathPositions.add(exit)
         self.__ent_exi.add(entrance)
         self.__ent_exi.add(exit)
 
-        #path portions
+        # path portions
         self.point_to_point(entrance, exit)
 
     def point_to_point(self, tuple1: tuple, tuple2: tuple):
@@ -137,12 +136,12 @@ class DungeonGenerator:
                     return False  # The position is not suitable for a pillar
 
         return True  # The position is suitable for a pillar
+
     def generate_maze(self):
         # Create a 2D array with all elements initialized to 0
         self.__Maze = [['0' for _ in range(self.__Row)] for _ in range(self.__Col)]
         # self.__Maze[0][1] = '1'
         # self.__Maze[0][2] = '1'
-
 
     def get_Pill_Pos(self):
         print(f"Pillars : {self.__PillarPosition}")
@@ -159,9 +158,8 @@ class DungeonGenerator:
         return instance
 
 
-
 # Example usage
-#dun = DungeonGenerator(10, 10)
-#print(dun)
+# dun = DungeonGenerator(5, 5)
+# print(dun)
 # dun.get_Path_Pos()
 # dun.get_Pill_Pos()

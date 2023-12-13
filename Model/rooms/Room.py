@@ -14,7 +14,7 @@ from Model.rooms.Items.Pillar.OOP import Abstraction
 
 class Room:
 
-    def __init__(self):
+    def __init__(self, location: tuple):
         self.__potion = None
         self.__pit = None
         self.__entrance = None
@@ -22,10 +22,10 @@ class Room:
         self.__doors = list()
         self.__monster = None
         self.__pillar = None
+        self.__location = location
 
-    def generate(self, special: str, position: tuple):
-        self.generate_special(special, tuple)
-
+    def generate(self, special: str):
+        self.generate_special(special)
 
     def generate_non_special(self):
         self.generate_potion()
@@ -42,11 +42,14 @@ class Room:
         elif special == "A":
             self.make_abstraction()
 
-    def generate_special(self, special: str, position: tuple):
+        # Ogre would have been made.
+        self.__monster.position = self.__location
+
+    def generate_special(self, special: str):
         if special == "X":
-            self.make_entrance(position)
+            self.make_entrance()
         elif special == "Y":
-            self.make_exit(position)
+            self.make_exit()
         elif special == "1":
             self.generate_non_special()
         elif special != "0":
@@ -59,15 +62,19 @@ class Room:
 
     def make_encapsulation(self):
         self.__pillar = Encapsulation()
+        self.__monster = Ogre()
 
     def make_polymorphism(self):
         self.__pillar = Polymorphism()
+        self.__monster = Ogre()
 
     def make_inheritance(self):
         self.__pillar = Inheritance()
+        self.__monster = Ogre()
 
     def make_abstraction(self):
         self.__pillar = Abstraction()
+        self.__monster = Ogre()
 
     # -------- Potion --------- #
     @property
@@ -103,15 +110,15 @@ class Room:
         self.__pit = random.randint(1, 20)
 
     # ------------ entrance and exit ----------- #
-    def make_entrance(self, position: tuple):
-        self.__entrance = position
+    def make_entrance(self):
+        self.__entrance = self.__location
 
     @property
     def entrance(self):
         return self.__entrance
 
-    def make_exit(self, position: tuple):
-        self.__exit = position
+    def make_exit(self):
+        self.__exit = self.__location
 
     @property
     def exit(self):
@@ -124,7 +131,7 @@ class Room:
         return self.__monster
 
     def generate_monster(self):
-        if random.randint(0, 100) <= 50:
+        if random.randint(0, 100) <= 1000: #change it to 75
             self.make_monster()
 
     def make_monster(self):
@@ -135,6 +142,8 @@ class Room:
             self.__monster = Skeleton()
         else:
             self.__monster = Ogre()
+
+        self.__monster.position = self.__location
 
     ###--String builders--##
     def north(self):
@@ -170,18 +179,18 @@ class Room:
         return center
 
     def __str__(self):
-        String = self.north() + "\n"
-        String = String + self.center() + "\n"
-        String = String + self.south() + "\n"
-        return String
+        # String = self.north() + "\n"
+        # String = String + self.center() + "\n"
+        # String = String + self.south() + "\n"
+        # return String
+        self.stat()
 
     # Room stats #
 
     def stat(self):
-        print(f"potion: {self.potion} \n monster: {self.monster} \n pit: {self.pit} \n pillar: {self.pillar}"
-              f"\n entrance: {self.entrance} \n exit: {self.exit}")
+        return f"potion: {self.potion} \n monster: {self.monster} \n pit: {self.pit} \n pillar: {self.pillar}\n" \
+               f"entrance: {self.entrance} \n exit: {self.exit} \n location: {self.__location}"
 
-
-room = Room()
-room.generate("A", (0, 0))
-room.stat()
+# room = Room()
+# room.generate("I", (0, 0))
+# room.stat()
