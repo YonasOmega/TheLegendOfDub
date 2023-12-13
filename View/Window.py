@@ -32,6 +32,7 @@ def load_music():
 
 load_music()
 pygame.mixer.music.play(-1)  # Play the music indefinitely
+pygame.mixer.music.set_volume(0.1)
 
 
 # Function for the introduction screen
