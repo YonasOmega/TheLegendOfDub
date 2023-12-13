@@ -1,11 +1,3 @@
-from Model.Characters.hero.Warrior import Warrior
-from Model.Characters.Monsters.Skeleton import Skeleton
-from Model.Characters.DungeonCharacter import DungeonCharacter
-from Model.Characters.hero.Heroes import Hero
-from Model.Characters.Monsters import Monster
-from Model.Characters.hero.Priestess import Priestess
-from Model.Characters.hero.Thief import Thief
-
 
 def calculate_turns(attacker_speed, defender_speed):
     return max(1, int(attacker_speed / defender_speed))
@@ -46,26 +38,9 @@ def start_combat(player, monster):
     return "Player" if monster.get_health() <= 0 else "Monster"
 
 
-def thief_skill(player, monster):
-    # Player's turn(s)
-    for _ in range(1):
-        if monster.get_health() <= 0 or player.get_health() <= 0:
-            break
-        attack_choice = player_choice()
-        if attack_choice == "1":
-            player.attack(monster)
-        elif attack_choice == "2":
-            player.special_skill(monster)
-        else:
-            print("Invalid choice, defaulting to normal attack.")
-            player.attack(monster)
 
-        print(f"Player health: {player.get_health()}")
-        print(f"Monster Health: {monster.get_health()}")
-
-
-# Example usage
-player = Warrior("Thief")
-monster = Skeleton()
-winner = start_combat(player, monster)
-print(f"The winner is {winner}")
+# # Example usage
+# player = Warrior("Thief")
+# monster = Skeleton()
+# winner = start_combat(player, monster)
+# print(f"The winner is {winner}")
