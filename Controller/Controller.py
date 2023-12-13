@@ -2,7 +2,17 @@ import pygame
 
 
 class PlayerController:
-    # Initialize the player controller
+    """
+    Initializes the PlayerController.
+
+    Parameters:
+    - start_pos: Starting position of the player (x, y).
+    - size: Size of the player.
+    - speed: Speed of the player's movement.
+    - heroes_model: Reference to the heroes model.
+    - dungeon_generator: Reference to the dungeon generator.
+    - assets: Dictionary containing player animation assets for different directions.
+    """
     def __init__(self, start_pos, size, speed, heroes_model, dungeon_generator, assets):
         self.position = start_pos
         self.size = size
@@ -15,7 +25,12 @@ class PlayerController:
         self.current_frame = 0
         self.frame_counter = 0
 
-    # Moves the player in given direction
+    """
+    Moves the player in the specified direction.
+
+    Parameters:
+    - direction: The direction in which the player should move ('UP', 'DOWN', 'LEFT', 'RIGHT').
+    """
     def move(self, direction):
         new_position = self.position.copy()
         move_x = 47  # Horizontal movement increment (width of one cell)
@@ -73,12 +88,28 @@ class PlayerController:
                 self.move("RIGHT")
                 self.key_held = True
 
+    """
+           Updates the player based on the given key state.
+
+           Parameters:
+           - key_state: Dictionary representing the state of keys (True if pressed, False otherwise).
+           """
     def update_animation(self):
         self.frame_counter += 1
         if self.frame_counter >= 60:  # FRAME_DELAY controls the speed of the animation
             self.frame_counter = 0
             self.current_frame = (self.current_frame + 1) % len(self.assets[self.current_direction])
 
-    # Sets the new speed for the player (CAN BE USED FOR BUFFS/DEBUFFS)
+    """
+    Sets the new speed for the player. (optional)
+
+    Parameters:
+    - new_speed: The new speed value.
+    """        """
+        Sets the new speed for the player.
+
+        Parameters:
+        - new_speed: The new speed value.
+        """
     def set_speed(self, new_speed):  # We can use to update speed for boost
         self.speed = new_speed

@@ -2,6 +2,15 @@ import pickle
 import os
 
 class GameState:
+    """
+    Saves the game state to a file.
+
+    Parameters:
+    - player: The player object.
+    - player_controller: The player controller object.
+    - dungeon_generator: The dungeon generator object.
+    - file_name: The name of the file to save the game state (default is 'savegame.pkl').
+    """
     @staticmethod
     def save_game(player, player_controller, dungeon_generator, file_name='savegame.pkl'):
         game_data = {
@@ -25,7 +34,15 @@ class GameState:
 
         with open(file_name, 'wb') as f:
             pickle.dump(game_data, f)
+        """
+        Loads the game state from a file.
 
+        Parameters:
+        - file_name: The name of the file to load the game state from (default is 'savegame.pkl').
+
+        Returns:
+        - The loaded game data if successful, otherwise None.
+        """
     @staticmethod
     def load_game(file_name='savegame.pkl'):
         if not os.path.exists(file_name):

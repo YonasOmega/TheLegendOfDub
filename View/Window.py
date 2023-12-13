@@ -8,17 +8,28 @@ from Model.Characters.hero.Warrior import Warrior
 from Model.Characters.hero.Thief import Thief
 from Model.Characters.hero.Priestess import Priestess
 from View import GameState
-
+import os
+from pathlib import Path
 from View.GameState import GameState
 
 
+# Initialize Pygame
 pygame.init()
 pygame.mixer.init()
 
-# Load and play background music
-pygame.mixer.music.load(r'C:\Users\yonas\PycharmProjects\TheLegendOfDub\Assets\Musics\1 - Adventure Begin.ogg')  # Adjust the path to your music file
-pygame.mixer.music.play(-1)  # The '-1' argument makes the music loop indefinitely
 
+
+# Load background music
+def load_music():
+    # Get the path to the script's directory
+    script_directory = Path(__file__).resolve().parent
+    music_path = os.path.join(script_directory, "..", "Assets", "Musics", "1 - Adventure Begin.ogg")
+
+    pygame.mixer.music.load(music_path)
+load_music()
+pygame.mixer.music.play(-1)   # Play the music indefinitely
+
+# Function for the introduction screen
 def intro_screen():
     intro = True
 
@@ -92,6 +103,7 @@ def intro_screen():
         # Continue with game setup for a new game
         # ...
         pass
+# Function for the "How to Play" screen
 def how_to_play_screen():
     running = True
     back_button_y_position = 350  # Adjust this value as needed
@@ -114,9 +126,12 @@ def how_to_play_screen():
         # Display the How to Play text
         font = pygame.font.Font(None, 35)
         instructions = [
-            "Instructions line 1",
-            "Instructions line 2",
-            "Instructions line 3",
+            "Welcome to our Game!",
+            " ",
+            "In order to win you must collect ",
+            "OOP pillars, avoid monsters,",
+            "and reach the exit for victory.",
+            "Use the arrow keys to move.",
             # Add as many lines as needed
         ]
         for i, line in enumerate(instructions):
@@ -130,27 +145,44 @@ def how_to_play_screen():
 
         pygame.display.update()
         clock.tick(15)
+# Function to load hero assets based on hero type
 def load_hero_assets(hero_type):
     assets = {}
-    target_size = (47, 47)  # Set your desired width and height
+    target_size = (47, 47)
+
+    # Get the path to the script's directory
+    script_directory = Path(__file__).resolve().parent
+
     if hero_type == "Warrior":
-        assets["up"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\Warrior\\Up\\Up{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
-        assets["down"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\Warrior\\Down\\Down{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
-        assets["left"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\Warrior\\Left\\Left{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
-        assets["right"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\Warrior\\Right\\Right{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
-    if hero_type == "Thief":
-        assets["up"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\thief\\up\\up{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
-        assets["down"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\thief\\down\\down{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
-        assets["left"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\thief\\left\\left{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
-        assets["right"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\thief\\right\\right{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
-    if hero_type == "Priestess":
-        assets["up"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\priestess\\up\\up{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
-        assets["down"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\priestess\\down\\down{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
-        assets["left"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\priestess\\left\\left{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
-        assets["right"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\priestess\\right\\right{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+        hero_images_path = os.path.join(script_directory, "..", "Assets", "Character", "Warrior")
+    elif hero_type == "Thief":
+        hero_images_path = os.path.join(script_directory, "..", "Assets", "Character", "thief")
+    elif hero_type == "Priestess":
+        hero_images_path = os.path.join(script_directory, "..", "Assets", "Character", "priestess")
+    else:
+        # Handle unknown hero types here
+        raise ValueError(f"Unknown hero type: {hero_type}")
+
+    assets["up"] = [
+        pygame.transform.scale(pygame.image.load(os.path.join(hero_images_path, "up", f"up{i}.png")), target_size)
+        for i in range(3)
+    ]
+    assets["down"] = [
+        pygame.transform.scale(pygame.image.load(os.path.join(hero_images_path, "down", f"down{i}.png")), target_size)
+        for i in range(3)
+    ]
+    assets["left"] = [
+        pygame.transform.scale(pygame.image.load(os.path.join(hero_images_path, "left", f"left{i}.png")), target_size)
+        for i in range(3)
+    ]
+    assets["right"] = [
+        pygame.transform.scale(pygame.image.load(os.path.join(hero_images_path, "Right", f"Right{i}.png")), target_size)
+        for i in range(3)
+    ]
+
     return assets
 
-
+# Function for the character selection screen
 def character_selection_screen():
     selection = True
     font = pygame.font.Font(None, 50)
@@ -212,7 +244,7 @@ screen_width = 470
 screen_height = 470
 
 
-# Image
+# Load images
 path_image = pygame.image.load("../Assets/brown.png")
 block_background = pygame.image.load("../Assets/white.png")
 exit_image = pygame.image.load("../Assets/icons8-close-window-96.png")
