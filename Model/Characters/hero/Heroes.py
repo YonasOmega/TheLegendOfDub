@@ -63,11 +63,13 @@ class Hero(DungeonCharacter):
 
     @property
     def bag(self):
+        number = 1
         if len(self.__bag) == 0:
             return "Empty bag"
         output = "Bag: [ "
         for i in self.__bag:
-            output += str(i) + ", "  # Ensure each item is converted to string
+            output += str(number) + ": " + str(i) + ", "  # Ensure each item is converted to string
+            number = number + 1
         output += "]"
         return output
 
@@ -76,11 +78,15 @@ class Hero(DungeonCharacter):
         """ Use an item from the bag """
         if 0 <= item_index < len(self.__bag):
             item = self.__bag[item_index]
-            # Apply the item's effect here. This depends on how items are structured.
-            # For example: item.apply_effect(self)
-            item.effect(self)
-            self.remove_item(item_index)
-            print(f"Used {item.__str__()}.")
+
+            if str(item) in ["Polymorphism", "Abstraction", "Encapsulation", "Inheritance"]:
+                print(f"{item} cannot be used. As it's a key")
+            else:
+                # Apply the item's effect here. This depends on how items are structured.
+                # For example: item.apply_effect(self)
+                item.effect(self)
+                self.remove_item(item_index)
+                print(f"Used {item.__str__()}.")
 
     def remove_item(self, item_index):
         """ Remove an item from the bag """
