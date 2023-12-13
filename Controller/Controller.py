@@ -51,7 +51,7 @@ class PlayerController:
         # Check with heroes model if the movement is valid
         if self.heroes_model.is_valid_movement(grid_position, self.dungeon_generator):
             self.position = new_position
-        print("Trying to move to:", new_position, " Grid position:", grid_position)
+
 
 
     # Gets the current position of the player
