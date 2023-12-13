@@ -10,8 +10,8 @@ class Priestess(Hero):
     def special_skill(self, target):
         # Implement the heal special skill
         heal_amount = random.randint(15, 30)  # Adjust the healing range as needed
-        target.receive_healing(heal_amount)
-        return f"{self._name} used heal on {target.name}, healing {heal_amount} hit points."
+        self.receive_healing(heal_amount)
+        print(f"{self._name} healed back {heal_amount} hit points.")
 
     def receive_healing(self, amount):
         self._health += amount
