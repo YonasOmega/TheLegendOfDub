@@ -3,13 +3,17 @@ import pygame
 
 class PlayerController:
     # Initialize the player controller
-    def __init__(self, start_pos, size, speed, heroes_model, dungeon_generator):
+    def __init__(self, start_pos, size, speed, heroes_model, dungeon_generator, assets):
         self.position = start_pos
         self.size = size
         self.speed = speed
         self.heroes_model = heroes_model #refers to heroes model
         self.dungeon_generator = dungeon_generator
         self.god_mode = False
+        self.assets = assets
+        self.current_direction = "down"
+        self.current_frame = 0
+        self.frame_counter = 0
 
     # Moves the player in given direction
     def move(self, direction):
@@ -24,6 +28,7 @@ class PlayerController:
             new_position[0] -= move_x
         elif direction == "RIGHT":
             new_position[0] += move_x
+        self.current_direction = direction.lower()  # Update current direction
 
         # Convert pixel position to grid coordinates
         grid_position = [new_position[1] // 47, new_position[0] // 47]
@@ -32,6 +37,7 @@ class PlayerController:
         if self.heroes_model.is_valid_movement(grid_position, self.dungeon_generator):
             self.position = new_position
         print("Trying to move to:", new_position, " Grid position:", grid_position)
+
 
     # Gets the current position of the player
     def get_position(self):
@@ -66,6 +72,12 @@ class PlayerController:
             if not self.key_held:
                 self.move("RIGHT")
                 self.key_held = True
+
+    def update_animation(self):
+        self.frame_counter += 1
+        if self.frame_counter >= 60:  # FRAME_DELAY controls the speed of the animation
+            self.frame_counter = 0
+            self.current_frame = (self.current_frame + 1) % len(self.assets[self.current_direction])
 
     # Sets the new speed for the player (CAN BE USED FOR BUFFS/DEBUFFS)
     def set_speed(self, new_speed):  # We can use to update speed for boost

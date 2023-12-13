@@ -152,6 +152,11 @@ class DungeonGenerator:
 
     def get_maze(self):
         return self.__Maze
+    @classmethod
+    def from_maze(cls, maze):
+        instance = cls(10, 10)  # Replace 10, 10 with appropriate dimensions if necessary
+        instance._maze = maze  # Assuming _maze is the attribute storing the maze
+        return instance
 
 
 

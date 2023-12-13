@@ -130,6 +130,26 @@ def how_to_play_screen():
 
         pygame.display.update()
         clock.tick(15)
+def load_hero_assets(hero_type):
+    assets = {}
+    target_size = (47, 47)  # Set your desired width and height
+    if hero_type == "Warrior":
+        assets["up"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\Warrior\\Up\\Up{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+        assets["down"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\Warrior\\Down\\Down{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+        assets["left"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\Warrior\\Left\\Left{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+        assets["right"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\Warrior\\Right\\Right{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+    if hero_type == "Thief":
+        assets["up"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\thief\\up\\up{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+        assets["down"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\thief\\down\\down{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+        assets["left"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\thief\\left\\left{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+        assets["right"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\thief\\right\\right{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+    if hero_type == "Priestess":
+        assets["up"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\priestess\\up\\up{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+        assets["down"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\priestess\\down\\down{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+        assets["left"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\priestess\\left\\left{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+        assets["right"] = [pygame.transform.scale(pygame.image.load(f'C:\\Users\\yonas\\PycharmProjects\\TheLegendOfDub\\Assets\\Character\\priestess\\right\\right{i}.png'), target_size) for i in range(0, 3)]  # Up0, Up1, Up2
+    return assets
+
 
 def character_selection_screen():
     selection = True
@@ -246,9 +266,12 @@ selected_hero = character_selection_screen()
 valid_paths = dungeon_generator.get_Path_Pos()
 start_grid_pos = random.choice(list(valid_paths))  # Grid position
 
+hero_type = selected_hero.__class__.__name__
+hero_assets = load_hero_assets(hero_type)
+
 # Convert grid position to pixel position for player start
 start_pixel_pos = [start_grid_pos[1] * 47, start_grid_pos[0] * 47]
-player_controller = PlayerController(start_pixel_pos, (47, 47), 2, selected_hero, dungeon_generator)
+player_controller = PlayerController(start_pixel_pos, (47, 47), 2, selected_hero, dungeon_generator, hero_assets)
 
 # Save the initial game state
 GameState.save_game(selected_hero, player_controller, dungeon_generator)
@@ -285,9 +308,13 @@ while True:
                 # Draw the element image for non-path positions
                 screen.blit(element_images[element], (col_index * 47, row_index * 47))
 
+    player_controller.update_animation()  # Update animation frame
     # Draw the player at the updated position
     player_pos = player_controller.get_position()
-    pygame.draw.rect(screen, (0, 255, 0), (*player_pos, *player_controller.size))
+    #pygame.draw.rect(screen, (0, 255, 0), (*player_pos, *player_controller.size))
+    current_sprites = player_controller.assets[player_controller.current_direction]
+    current_sprite = current_sprites[player_controller.current_frame]
+    screen.blit(current_sprite, player_pos)
 
     pygame.display.update()
     clock.tick(60)  # shouldn't run more than 60 ticks
