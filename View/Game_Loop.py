@@ -180,11 +180,23 @@ class Main:
             self.__selected_hero.receive_damage(room.pit)
 
         if room.monster:
+
+            # Combat Music
+            pygame.mixer.music.stop()
+            script_directory = Path(__file__).resolve().parent
+            music_path = os.path.join(script_directory, "..", "Assets", "Musics", "17 - Fight.ogg")
+            pygame.mixer.music.load(music_path)
+            pygame.mixer.music.play(-1)
+            pygame.mixer.music.set_volume(0.1)
+
             print(f"You have encountered a {room.monster}")
             print(self.__selected_hero)
             print(room.monster)
             Combat_Encounter.start_combat(self.__selected_hero, room.monster)
             room.monster_defeated()
+
+            # Load back normal music
+            Intro.load_music()
 
         elif not self.__selected_hero.is_alive():
             return "lost"
