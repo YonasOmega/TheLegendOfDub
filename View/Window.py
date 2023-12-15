@@ -236,7 +236,7 @@ def character_selection_screen():
         thief_color = (255, 0, 0) if start_x <= mouse[0] <= start_x + button_width and start_y + button_height + 10 <= \
                                      mouse[1] <= start_y + 2 * button_height + 10 else (200, 0, 0)
         priestess_color = (0, 0, 255) if start_x <= mouse[0] <= start_x + button_width and start_y + 2 * (
-                    button_height + 10) <= mouse[1] <= start_y + 3 * button_height + 20 else (0, 0, 200)
+                button_height + 10) <= mouse[1] <= start_y + 3 * button_height + 20 else (0, 0, 200)
 
         # Draw buttons with the appropriate color based on hover state
         pygame.draw.rect(screen, warrior_color, [start_x, start_y, button_width, button_height])  # Warrior
@@ -301,6 +301,59 @@ def game_loop(dungeon: Dungeon, player: Hero):
     return "continue"
 
 
+def display_full_map():
+    screen.fill((0, 0, 0))
+    for row_index, row in enumerate(dungeon.maze.get_maze()):
+        for col_index, element in enumerate(row):
+            screen.blit(element_images[element], (col_index * 47, row_index * 47))
+    pygame.display.update()
+
+
+def show_endgame_message(screen, status):
+    # Create a semi-transparent surface
+    transparent_surface = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
+    transparent_surface.fill((0, 0, 0, 128))  # 128 here is the alpha value for half transparency
+
+    # Render the message text
+    font = pygame.font.Font(None, 74)
+    message = "Congratulations! You have won the game!" if status == "won" else "You have lost the game. Better luck next time!"
+    text = font.render(message, True, (255, 255, 255))
+    text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+
+    # Blit the text onto the semi-transparent surface
+    transparent_surface.blit(text, text_rect)
+
+    # Blit the semi-transparent surface onto the screen
+    screen.blit(transparent_surface, (0, 0))
+    pygame.display.update()
+
+def endgame_screen(screen, status, dungeon, element_images):
+    display_full_map()
+    show_endgame_message(screen, status)
+
+    new_game_button_area = pygame.Rect(screen.get_width() // 2 - 50, screen.get_height() // 2 + 100, 100, 50)
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse = pygame.mouse.get_pos()
+                if new_game_button_area.collidepoint(mouse):
+                    intro_screen()  # Call the intro screen to start a new game
+                    running = False
+
+        pygame.draw.rect(screen, (0, 255, 0), new_game_button_area)
+        small_font = pygame.font.Font(None, 35)
+        text_new_game = small_font.render("New Game", True, (255, 255, 255))
+        screen.blit(text_new_game, (screen.get_width() // 2 - 40, screen.get_height() // 2 + 110))
+        pygame.display.update()
+        clock.tick(15)
+
+
+
 # Set the window size
 screen_width = 470
 screen_height = 470
@@ -328,9 +381,11 @@ pygame.display.update()
 pygame.display.set_caption("LegendOfDub")
 
 # Create a DungeonGenerator instance
-dungeon = Dungeon(6, 6)
+dungeon = Dungeon(10, 10)
 # dungeon_generator = DungeonGenerator(10, 10)  # Set appropriate dimensions
-
+# TODO
+# Initialize visibility array
+visibility = [[False for _ in range(10)] for _ in range(10)]
 
 # dungeon_generator.generate()
 
@@ -367,7 +422,8 @@ hero_assets = load_hero_assets(hero_type)
 
 # Convert grid position to pixel position for player start
 start_pixel_pos = [start_grid_pos[1] * 47, start_grid_pos[0] * 47]
-player_controller = PlayerController(start_pixel_pos, (47, 47), 2, selected_hero, dungeon.maze, hero_assets, selected_hero)
+player_controller = PlayerController(start_pixel_pos, (47, 47), 2, selected_hero, dungeon.maze, hero_assets,
+                                     selected_hero)
 
 # Save the initial game state
 GameState.save_game(selected_hero, player_controller, dungeon.maze)
@@ -380,11 +436,16 @@ while game_status == "continue":
             pygame.quit()
             exit()
 
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_b:
+                selected_hero.player_use_item()
+
     # Get the current key state
     key_state = pygame.key.get_pressed()
 
     # Update the player controller
     player_controller.update(key_state)
+    player_controller.update_visibility(visibility)
 
     # Update the display
     screen.fill((0, 0, 0))
@@ -393,24 +454,20 @@ while game_status == "continue":
     path_positions = dungeon.maze.get_Path_Pos()
     pillar_position = dungeon.maze.get_Pill_Pos()
 
-    # Draw the dungeon elements on the screen
     for row_index, row in enumerate(dungeon.maze.get_maze()):
         for col_index, element in enumerate(row):
-            position = (row_index, col_index)
-            # if position in path_positions:
-            #     # Draw a red rectangle for path positions
-            #     pygame.draw.rect(screen, (255, 0, 0), (col_index * 47, row_index * 47, 47, 47))
-            # elif element in element_images:
-            #     # Draw the element image for non-path positions
-            #     screen.blit(element_images[element], (col_index * 47, row_index * 47))
-            screen.blit(element_images[element], (col_index * 47, row_index * 47))
+            if visibility[row_index][col_index]:
+                screen.blit(element_images[element], (col_index * 47, row_index * 47))
+            else:
+                # Draw a black tile or your fog of war representation
+                pygame.draw.rect(screen, (0, 0, 0), (col_index * 47, row_index * 47, 47, 47))
 
     player_controller.update_animation()  # Update animation frame
     # Draw the player at the updated position
     player_pos = player_controller.get_position()
     temp_pos = player_controller.get_grid_position()
     selected_hero.position = temp_pos
-    print(f"True hero position:  {selected_hero.position}")
+    # print(f"True hero position:  {selected_hero.position}")
     # pygame.draw.rect(screen, (0, 255, 0), (*player_pos, *player_controller.size))
     current_sprites = player_controller.assets[player_controller.current_direction]
     current_sprite = current_sprites[player_controller.current_frame]
@@ -425,4 +482,6 @@ if game_status == "won":
 elif game_status == "lost":
     print("You have lost the game. Better luck next time!")
 
-print(dungeon.maze)
+if game_status in ["won", "lost"]:
+    endgame_screen(screen, game_status, dungeon, element_images)
+

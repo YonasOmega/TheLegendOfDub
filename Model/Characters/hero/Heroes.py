@@ -101,7 +101,6 @@ class Hero(DungeonCharacter):
 
     def player_use_item(self):
         print(self.bag)  # Display the contents of the bag
-
         try:
             choice = int(input("Select an item to use (1-based index) or 0 to cancel: "))
             if choice == 0:

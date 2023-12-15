@@ -138,3 +138,15 @@ class PlayerController:
     @god_mode.setter
     def god_mode(self, value):
         self._god_mode = value
+
+    #TODO
+    # FINilizre
+    def update_visibility(self, visibility):
+        x, y = self.__player.position
+        visibility[x][y] = True
+        # Optionally, reveal adjacent tiles as well
+        for dx in [-1, 0, 1]:
+            for dy in [-1, 0, 1]:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < len(visibility) and 0 <= ny < len(visibility[0]):
+                    visibility[nx][ny] = True
