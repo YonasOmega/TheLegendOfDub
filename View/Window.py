@@ -383,7 +383,7 @@ pygame.display.set_caption("LegendOfDub")
 # Create a DungeonGenerator instance
 dungeon = Dungeon(10, 10)
 # dungeon_generator = DungeonGenerator(10, 10)  # Set appropriate dimensions
-# TODO
+
 # Initialize visibility array
 visibility = [[False for _ in range(10)] for _ in range(10)]
 

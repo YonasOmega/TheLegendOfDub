@@ -65,7 +65,7 @@ class Intro:
                             # Optionally, you could display a message on the screen
                     # How to Play button clicked
                     elif how_to_play_button_area.collidepoint(mouse):
-                        Intro.how_to_play_screen()  # Call the How to Play screen
+                        Intro.how_to_play_screen(screen, clock)  # Call the How to Play screen
 
             # Fill the screen with a background color
             screen.fill((0, 0, 0))
@@ -135,9 +135,11 @@ class Intro:
                 "Welcome to our Game!",
                 " ",
                 "In order to win you must collect ",
-                "OOP pillars, avoid monsters,",
+                "OOP pillars, defeat monsters,",
                 "and reach the exit for victory.",
                 "Use the arrow keys to move.",
+                "press g for god-mode, i for lose mode.",
+                "press b to use items."
                 # Add as many lines as needed
             ]
             for i, line in enumerate(instructions):
@@ -153,6 +155,7 @@ class Intro:
             pygame.display.update()
             clock.tick(15)
 
+    @staticmethod
     def load_hero_assets(hero_type):
         assets = {}
         target_size = (47, 47)
