@@ -23,6 +23,9 @@ class Intro:
 
     @staticmethod
     def load_music():
+        """
+        Loads and plays the introductory music for the game.
+        """
         # Get the path to the script's directory
         script_directory = Path(__file__).resolve().parent
         music_path = os.path.join(script_directory, "..", "Assets", "Musics", "1 - Adventure Begin.ogg")
@@ -33,6 +36,13 @@ class Intro:
     @staticmethod
     # Function for the introduction screen
     def intro_screen(screen, clock):
+        """
+        Renders the introduction screen with game options.
+
+        Parameters:
+        - screen (pygame.Surface): The main game display surface.
+        - clock (pygame.Clock): The game's clock for managing frame rate.
+        """
         intro = True
 
         # Define Load Game Button Area
@@ -111,6 +121,13 @@ class Intro:
 
     @staticmethod
     def how_to_play_screen(screen, clock):
+        """
+        Renders the 'How to Play' instructions screen.
+
+        Parameters:
+        - screen (pygame.Surface): The main game display surface.
+        - clock (pygame.Clock): The game's clock for managing frame rate.
+        """
         running = True
         back_button_y_position = 350  # Adjust this value as needed
         back_button_area = pygame.Rect(150, back_button_y_position, 100, 50)
@@ -157,6 +174,15 @@ class Intro:
 
     @staticmethod
     def load_hero_assets(hero_type):
+        """
+        Loads and returns the graphical assets for a specific hero type.
+
+        Parameters:
+        - hero_type (str): The type of hero (e.g., 'Warrior', 'Thief', 'Priestess').
+
+        Returns:
+        - dict: A dictionary of assets for the specified hero type.
+        """
         assets = {}
         target_size = (47, 47)
 

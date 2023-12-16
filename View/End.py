@@ -22,6 +22,14 @@ class End:
 
     @staticmethod
     def display_full_map(screen, dungeon, element_images):
+        """
+        Renders the complete dungeon map on the screen.
+
+        Parameters:
+        - screen (pygame.Surface): The main game display surface.
+        - dungeon (Dungeon): The dungeon object containing the maze.
+        - element_images (dict): Dictionary containing images for each element in the maze.
+        """
         screen.fill((0, 0, 0))
         for row_index, row in enumerate(dungeon.maze.get_maze()):
             for col_index, element in enumerate(row):
@@ -30,6 +38,13 @@ class End:
 
     @staticmethod
     def show_endgame_message(screen, status):
+        """
+        Renders an endgame message based on the player's win or loss status.
+
+        Parameters:
+        - screen (pygame.Surface): The main game display surface.
+        - status (str): The game's outcome status ('won' or 'lost').
+        """
         # Create a semi-transparent surface
         transparent_surface = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
         transparent_surface.fill((0, 0, 0, 128))  # 128 here is the alpha value for half transparency
@@ -49,6 +64,19 @@ class End:
 
     @staticmethod
     def endgame_screen(screen, status, dungeon, clock, element_images):
+        """
+        Displays the endgame screen with the full map, outcome message, and new game option.
+
+        Parameters:
+        - screen (pygame.Surface): The main game display surface.
+        - status (str): The game's outcome status ('won' or 'lost').
+        - dungeon (Dungeon): The dungeon object containing the maze.
+        - clock (pygame.Clock): The game's clock for managing frame rate.
+        - element_images (dict): Dictionary containing images for each element in the maze.
+
+        Returns:
+        - bool: True if the player chooses to start a new game, False otherwise.
+        """
 
         # End Music
         pygame.mixer.music.stop()  # Play the music indefinitely

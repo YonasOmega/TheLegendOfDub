@@ -21,6 +21,25 @@ from View.Intro import Intro
 
 
 class Main:
+    """
+    The Main class orchestrates the overall game flow, including initialization,
+    game loop, and rendering the game state.
+
+    Attributes:
+        __player_controller (PlayerController): Manages player movements and interactions.
+        __start_grid_position (tuple): The starting grid position of the player.
+        __screen (pygame.Surface): The main game display surface.
+        __screen_width (int): Width of the game screen.
+        __screen_height (int): Height of the game screen.
+        __pygame (module): Reference to the pygame module.
+        __path_image, __block_background, etc.: Pygame surfaces for various game assets.
+        __dungeon (Dungeon): Represents the game's dungeon environment.
+        __visibility (2D list): Tracks visibility of dungeon cells.
+        __element_images (dict): Stores pygame surfaces for dungeon elements.
+        __clock (pygame.Clock): Manages game frame rate.
+        __selected_hero (Hero): The player's chosen hero character.
+        __valid_paths (set): Set of valid movement paths in the dungeon.
+    """
 
     def __init__(self):
         self.__player_controller = None
@@ -62,6 +81,9 @@ class Main:
         self.main()
 
     def initialize(self):
+        """
+        Initializes or resets the game attributes to their default state.
+        """
         self.__player_controller = None
         self.__start_grid_position = None
         self.__screen = None
@@ -100,6 +122,9 @@ class Main:
         self.__valid_paths = self.__dungeon.maze.get_Path_Pos()
 
     def main(self):
+        """
+        Sets up and starts the main game loop.
+        """
         self.initialize()
         self.__pygame.init()
         self.__pygame.mixer.init()
@@ -130,6 +155,10 @@ class Main:
         self.loop()
 
     def loop(self):
+        """
+        Manages the main game loop, including event handling, game state updates,
+        and screen rendering.
+        """
         game_status = "continue"
         while game_status == "continue":
             for event in self.__pygame.event.get():
@@ -188,7 +217,9 @@ class Main:
                 self.main()
 
     def game_loop(self):
-        print("Game loop is happening")
+        """
+        Handles the game logic for each iteration of the main game loop.
+        """
         room = self.__dungeon.get_room(self.__selected_hero.position[0], self.__selected_hero.position[1])
 
         if room.exit:
