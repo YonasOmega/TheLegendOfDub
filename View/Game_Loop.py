@@ -61,7 +61,46 @@ class Main:
         self.__valid_paths = self.__dungeon.maze.get_Path_Pos()
         self.main()
 
+    def initialize(self):
+        self.__player_controller = None
+        self.__start_grid_position = None
+        self.__screen = None
+        self.__screen_width = 470
+        self.__screen_height = 470
+        self.__pygame = pygame
+
+        self.__path_image = self.__pygame.image.load("../Assets/brown.png")
+        self.__block_background = self.__pygame.image.load("../Assets/white.png")
+        self.__exit_image = self.__pygame.image.load("../Assets/icons8-close-window-96.png")
+        self.__entrance_image = self.__pygame.image.load("../Assets/icons8-tick-96.png")
+        self.__abstraction_image = self.__pygame.image.load("../Assets/icons8-a-48.png")
+        self.__inheritance_image = self.__pygame.image.load("../Assets/icons8-letter-i-47.png")
+        self.__encapsulation_image = self.__pygame.image.load("../Assets/icons8-e-48.png")
+        self.__polymorphism_image = self.__pygame.image.load("../Assets/icons8-p-key-48.png")
+
+        self.__dungeon = Dungeon(10, 10)
+        self.__visibility = [[False for _ in range(10)] for _ in range(10)]
+
+        self.__element_images = {
+            'X': self.__entrance_image,
+            'Y': self.__exit_image,
+            #
+            'A': self.__abstraction_image,
+            'E': self.__encapsulation_image,
+            'I': self.__inheritance_image,
+            'P': self.__polymorphism_image,
+            '1': self.__path_image,
+            '0': self.__block_background,
+        }
+
+        self.__clock = pygame.time.Clock()
+
+        self.__selected_hero = None
+
+        self.__valid_paths = self.__dungeon.maze.get_Path_Pos()
+
     def main(self):
+        self.initialize()
         self.__pygame.init()
         self.__pygame.mixer.init()
 

@@ -14,6 +14,7 @@ class DungeonCharacter(ABC):
         self.__chance_to_hit = chance_to_hit
         self.__turns = None
         self.__position = None
+        self.__health_cap = health
 
     # @abstractmethod
     # def attack(self, opponent):
@@ -48,6 +49,9 @@ class DungeonCharacter(ABC):
 
     def set_health(self, heal: int):
         self.__health += heal
+
+    def set_damage(self, damage: int):
+        self.__health -= damage
 
     def get_attack_speed(self):
         return self.__attack_speed

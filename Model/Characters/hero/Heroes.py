@@ -20,8 +20,8 @@ class Hero(DungeonCharacter):
     def receive_damage(self, damage):
         # Normal damage processing
         if not self.block_attack():
-            self.set_health(damage)
-            #print(f"Received damage: {damage}. Current health: {self._health}")
+            self.set_damage(damage)
+            print(f"Received damage: {damage}. Current health: {self.get_health()}")
         else:
             print(f"{self.get_name()} Blocked the attack!")
 
@@ -76,8 +76,7 @@ class Hero(DungeonCharacter):
             if str(item) in ["Polymorphism", "Abstraction", "Encapsulation", "Inheritance"]:
                 print(f"{item} cannot be used. As it's a key")
             else:
-                # Apply the item's effect here. This depends on how items are structured.
-                # For example: item.apply_effect(self)
+
                 item.effect(self)
                 self.remove_item(item_index)
                 print(f"Used {item.__str__()}.")
