@@ -118,6 +118,9 @@ class Room:
     def make_pit(self):
         self.__pit = random.randint(1, 20)
 
+    def discard_pit(self):
+        self.__pit = None
+
     # ------------ entrance and exit ----------- #
     def make_entrance(self):
         self.__entrance = self.__location

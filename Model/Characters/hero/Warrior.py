@@ -11,6 +11,6 @@ class Warrior(Hero):
         if random.random() <= 0.4:  # 40% chance of success
             damage = random.randint(75, 175)
             opponent.receive_damage(damage)
-            print(f"{self._name} used Crushing Blow on {opponent._name} for {damage} damage.")
+            print(f"{self.get_name()} used Crushing Blow on {opponent.get_name()} for {damage} damage.")
         else:
-            print(f"{self._name} attempted Crushing Blow on {opponent._name} but missed.")
+            print(f"{self.get_name()} attempted Crushing Blow on {opponent.get_name()} but missed.")

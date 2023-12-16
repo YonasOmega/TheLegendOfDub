@@ -178,6 +178,7 @@ class Main:
         if room.pit:
             print(f"You fell into a pit. You took {room.pit} damage")
             self.__selected_hero.receive_damage(room.pit)
+            room.discard_pit()
 
         if room.monster:
 

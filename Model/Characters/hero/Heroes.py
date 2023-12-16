@@ -7,7 +7,7 @@ from Controller.Controller import PlayerController
 class Hero(DungeonCharacter):
     def __init__(self, name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_block):
         super().__init__(name, health, min_damage, max_damage, attack_speed, chance_to_hit)
-        self.chance_to_block = chance_to_block
+        self.__chance_to_block = chance_to_block
         self.__bag = []
 
     @abstractmethod
@@ -15,24 +15,15 @@ class Hero(DungeonCharacter):
         pass
 
     def block_attack(self):
-        return random.random() < self.chance_to_block
+        return random.random() < self.__chance_to_block
 
     def receive_damage(self, damage):
-        # if self.player_controller.god_mode is not None:  # Check if God Mode is active
-        #     if(self.player_controller.god_mode):
-        #         print("God Mode active: No damage received.")
-        #         super().god_mode()
-        #         return
-
         # Normal damage processing
         if not self.block_attack():
-            self._health -= damage
+            self.set_health(damage)
             #print(f"Received damage: {damage}. Current health: {self._health}")
         else:
             print(f"{self.get_name()} Blocked the attack!")
-        # pass
-        # if blockattack true, no damage, otherwise get damage
-        # apply to monsters as well
 
     def is_valid_movement(self, new_position, dungeon_generator):
         # Check if the new position is within the dungeon boundaries
@@ -51,15 +42,13 @@ class Hero(DungeonCharacter):
 
     def attack(self, opponent):
         attack_count = self.calculate_attack_count(opponent)
-
-        #for _ in range(attack_count):
         if self.can_attack():
             damage = self.calculate_damage()
             opponent.receive_damage(damage)
 
-            print(f"{self._name} successfully attacked {opponent.get_name()} for {damage} damage.")
+            print(f"{self.get_name()} successfully attacked {opponent.get_name()} for {damage} damage.")
         else:
-            print(f"{self._name} missed the attack on {opponent.get_name()}.")
+            print(f"{self.get_name} missed the attack on {opponent.get_name()}.")
         self.__str__()
         opponent.__str__()
 
@@ -115,5 +104,9 @@ class Hero(DungeonCharacter):
 
     def bag_object(self):
         return self.__bag
+
+    @property
+    def chance_to_block(self):
+        return self.__chance_to_block
 
 

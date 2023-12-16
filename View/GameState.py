@@ -1,5 +1,6 @@
 import pickle
 import os
+from Model.Characters.hero.Heroes import Hero
 
 class GameState:
     """
@@ -12,15 +13,15 @@ class GameState:
     - file_name: The name of the file to save the game state (default is 'savegame.pkl').
     """
     @staticmethod
-    def save_game(player, player_controller, dungeon_generator, file_name='savegame.pkl'):
+    def save_game(player: Hero, player_controller, dungeon_generator, file_name='savegame.pkl'):
         game_data = {
             'player_position': player_controller.get_position(),
             'player_stats': {
-                'health': player._health,
-                'min_damage': player._min_damage,
-                'max_damage': player._max_damage,
-                'attack_speed': player._attack_speed,
-                'chance_to_hit': player._chance_to_hit,
+                'health': player.get_health(),
+                'min_damage': player.min_damage,
+                'max_damage': player.max_damage,
+                'attack_speed': player.get_attack_speed(),
+                'chance_to_hit': player.chance_to_hit,
                 'chance_to_block': player.chance_to_block
             },
             'maze': dungeon_generator.get_maze()  #SAVE THE DUNGEON INSTEAD
