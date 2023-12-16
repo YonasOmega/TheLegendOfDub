@@ -18,10 +18,8 @@ class Dungeon:
                 room = Room((col, row))
                 room.generate(self.__maze[col][row])
                 self.__maze_rooms[col][row] = room
-                print(f"Room at ({col}, {row}): {self.__maze[col][row]}")  # Debug print
                 if self.__maze[col][row] == "X":
                     self.__player = (col, row)
-                    print(f"Player location set to: {self.player_location}")  # Debug print
 
     # Rest of the Dungeon class remains the same
 
