@@ -14,14 +14,12 @@ class DungeonCharacter(ABC):
 
 
         Parameters:
-            - __name (str): The name of the character.
-            - __health (int): The initial health points of the character.
-            - __min_damage (int): The minimum damage the character can inflict.
-            - __max_damage (int): The maximum damage the character can inflict.
-            - __attack_speed (float): The attack speed of the character.
-            - __chance_to_hit (float): The probability of a successful attack.
-            - __turns (int): The turns a character gets when battling
-            - __position(tuple): The character's position in the dungeon
+            - name (str): The name of the character.
+            - health (int): The initial health points of the character.
+            - min_damage (int): The minimum damage the character can inflict.
+            - max_damage (int): The maximum damage the character can inflict.
+            - attack_speed (float): The attack speed of the character.
+            - chance_to_hit (float): The probability of a successful attack.
 
         """
         if health < 0 or min_damage < 0 or max_damage < 0 or attack_speed < 0 or chance_to_hit < 0:
