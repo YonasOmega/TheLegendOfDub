@@ -1,36 +1,29 @@
 import sqlite3
 from Model.Characters.Monsters.Monster import Monster
-import random
 
 class Skeleton(Monster):
+    """
+    Skeleton class represents a specific type of monster - a Skeleton, inheriting from Monster.
+    """
+
     def __init__(self):
+        """
+        Initializes a Skeleton instance with data fetched from the database.
+        """
         skeleton_data = Skeleton.fetch_skeleton_data()
         name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal = skeleton_data
         super().__init__(name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal)
 
-    def attack(self, opponent):
-        if self.can_attack():
-            damage = random.randint(self._min_damage, self._max_damage)
-            opponent.receive_damage(damage)
-            print(f"{self._name} attacked {opponent._name} for {damage} damage.")
-            self.heal()
-        else:
-            print(f"{self._name} missed the attack on {opponent._name}.")
-
-    # @staticmethod
-    # def fetch_skeleton_data():
-    #     connection = sqlite3.connect("../../db/monsters.db")
-    #     cur = connection.cursor()
-    #
-    #     cur.execute("SELECT * FROM monster WHERE monster_type = 'Skeleton'")
-    #     skeleton_data = cur.fetchone()
-    #
-    #     connection.close()
-    #     return skeleton_data
     @staticmethod
     def fetch_skeleton_data():
+        """
+        Fetches Skeleton data from the database.
+
+        Returns:
+            tuple: A tuple containing Skeleton data (name, health, min_damage, max_damage, attack_speed, chance_to_hit, chance_to_heal).
+        """
         try:
-            #connection = sqlite3.connect("../../db/monsters.db")
+            # Adjust the database path as needed
             connection = sqlite3.connect("/Users/billy/2023-2024/Fall/360/TheLegendOfDub/Model/db/monsters.db")
         except sqlite3.OperationalError as e:
             print(f"Error opening database: {e}")
@@ -46,7 +39,6 @@ class Skeleton(Monster):
 
         connection.close()
         return skeleton_data
-
 
 # Example of instantiating a Skeleton
 # skeleton = Skeleton()
